@@ -1,0 +1,2157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meridian Markets</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-2: #0b1728;
+      --panel: rgba(9, 18, 33, 0.78);
+      --panel-strong: rgba(13, 25, 45, 0.95);
+      --border: rgba(140, 164, 191, 0.18);
+      --text: #e7eef9;
+      --muted: #95a6bd;
+      --green: #34d399;
+      --red: #fb7185;
+      --amber: #fbbf24;
+      --blue: #60a5fa;
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(96, 165, 250, 0.20), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(52, 211, 153, 0.14), transparent 24%),
+        linear-gradient(180deg, #05101d 0%, #081523 55%, #06101b 100%);
+      overflow: auto;
+      scroll-behavior: smooth;
+    }
+
+    html { scroll-behavior: smooth; }
+
+
+    .shell {
+      height: auto;
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 22px;
+      gap: 18px;
+    }
+
+    .topbar, .panel, .card {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .topbar {
+      border-radius: var(--radius-xl);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 45;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .topbar-toggle {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      gap: 4px;
+      border-radius: 15px;
+      flex: 0 0 auto;
+    }
+
+    .topbar-toggle .bars {
+      width: 18px;
+      height: 14px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .topbar-toggle .bars span {
+      display: block;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: .95;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(96,165,250,.22), rgba(52,211,153,.18));
+      border: 1px solid rgba(160, 190, 225, 0.25);
+      font-weight: 800;
+      color: #d9ebff;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .subtitle[hidden] {
+      display: none !important;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45); }
+      70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+
+    .content {
+      position: relative;
+      min-height: 0;
+      display: block;
+    }
+
+    .content > .side {
+      position: fixed;
+      left: 22px;
+      top: 110px;
+      width: 320px;
+      max-height: calc(100vh - 124px);
+      overflow: auto;
+      z-index: 40;
+      transition: width .22s ease, min-width .22s ease, opacity .18s ease, transform .22s ease;
+      transform-origin: left top;
+    }
+
+    .main-column {
+      min-width: 0;
+      display: flex;
+      gap: 18px;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    .main-column > .panel {
+      min-width: 0;
+    }
+
+    .main-column > .panel:first-child {
+      flex: 1 1 0;
+    }
+
+    .main-column > .workspace-panel {
+      flex: 0 0 min(420px, 100%);
+      max-width: 420px;
+    }
+
+    .module-view {
+      flex: 1 1 auto;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .module-card {
+      width: min(420px, 100%);
+      aspect-ratio: 1 / 1;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .module-empty {
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .module-empty h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .module-empty p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .module-view[hidden],
+    .main-column[hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 1080px) {
+      .main-column {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .main-column > .workspace-panel {
+        grid-column: auto;
+        max-width: none;
+        flex: initial;
+      }
+      .main-column > .panel:first-child {
+        grid-column: auto;
+        flex: initial;
+      }
+    }
+
+    .sidebar-rail {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-rail .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .sidebar-tab {
+      justify-content: flex-start;
+    }
+
+    .sidebar-spacer {
+      height: 14px;
+    }
+
+    .sidebar-label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .shell.sidebar-collapsed .content > .side {
+      width: 0;
+      min-width: 0;
+      opacity: 0;
+      transform: translateX(-115%);
+      pointer-events: none;
+    }
+
+    .overview-popout-mode .side,
+    .overview-popout-mode .module-view,
+    .overview-popout-mode .workspace-panel {
+      display: none !important;
+    }
+
+    .overview-popout-mode .topbar-toggle {
+      display: none !important;
+    }
+
+    .overview-popout-mode .popout-overview {
+      display: none !important;
+    }
+
+    .shell.sidebar-collapsed .sidebar-note,
+    .shell.sidebar-collapsed .sidebar-label,
+    .shell.sidebar-collapsed .sidebar-rail {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .content > .side {
+        left: 16px;
+        top: 106px;
+        width: min(320px, calc(100vw - 32px));
+        max-height: calc(100vh - 116px);
+      }
+      .shell.sidebar-collapsed .content > .side {
+        width: 0;
+        min-width: 0;
+        opacity: 0;
+        transform: translateX(-115%);
+        pointer-events: none;
+      }
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(160, 190, 225, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+    }
+
+    .panel-title {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 1px solid rgba(160, 190, 225, 0.18);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+      transition: .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.08); }
+    .btn.primary { background: linear-gradient(135deg, rgba(96,165,250,.25), rgba(52,211,153,.18)); }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .icon-btn.popout-overview {
+      border-color: rgba(96, 165, 250, 0.24);
+      background: rgba(96, 165, 250, 0.10);
+      color: #dbeafe;
+    }
+
+    .icon-btn.popout-overview:hover {
+      background: rgba(96, 165, 250, 0.18);
+    }
+
+    .range-group {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 225, 0.16);
+      background: rgba(255,255,255,.03);
+      flex-wrap: wrap;
+    }
+
+    .range-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+      transition: .18s ease;
+    }
+
+    .range-btn:hover { color: var(--text); background: rgba(255,255,255,.06); }
+    .range-btn.active { color: #04101b; background: linear-gradient(135deg, #93c5fd, #6ee7b7); font-weight: 800; }
+
+    .board {
+      padding: 18px;
+      min-height: 0;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      overflow: visible;
+    }
+
+    .side-tabs {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 190, 225, 0.16);
+      background: rgba(255,255,255,.03);
+      width: fit-content;
+    }
+
+    .side-tab {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+      transition: .18s ease;
+    }
+
+    .side-tab:hover { color: var(--text); background: rgba(255,255,255,.06); }
+    .side-tab.active { color: #04101b; background: linear-gradient(135deg, #93c5fd, #6ee7b7); font-weight: 800; }
+
+    .side-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .watchlist-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .info-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 22px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(13,25,45,.88), rgba(8,16,29,.85));
+      border-color: rgba(160, 190, 225, 0.15);
+      display: grid;
+      gap: 14px;
+    }
+
+    .spark-tooltip {
+      position: absolute;
+      z-index: 4;
+      display: none;
+      pointer-events: none;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(160, 190, 225, 0.22);
+      background: rgba(4, 16, 27, 0.92);
+      color: var(--text);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 12px;
+      line-height: 1.35;
+      transform: translate(-50%, calc(-100% - 10px));
+      white-space: nowrap;
+    }
+
+    .spark-tooltip .meta {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+
+    .spark-tooltip .price {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .remove-stock {
+      border: 1px solid rgba(251, 113, 133, 0.22);
+      background: rgba(251, 113, 133, 0.08);
+      color: #fecdd3;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .remove-stock:hover {
+      transform: translateY(-1px);
+      background: rgba(251, 113, 133, 0.14);
+    }
+
+    .card-head .symbol-line {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .symbol-line {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .symbol {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .name, .meta, .small, .footnote { color: var(--muted); }
+    .name { font-size: 12px; }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .price {
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .change {
+      text-align: right;
+      font-weight: 700;
+      font-size: 14px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(160,190,225,0.16);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      width: fit-content;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.15);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+    }
+
+    .kv {
+      padding: 12px 0 0;
+      border-top: 1px solid rgba(160,190,225,0.10);
+    }
+
+    .k { color: var(--muted); font-size: 12px; }
+    .v { margin-top: 4px; font-size: 14px; font-weight: 700; }
+
+    canvas {
+      width: 100%;
+      height: 100px;
+      display: block;
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(160,190,225,0.10);
+      cursor: crosshair;
+    }
+
+    .side {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+
+    .side .card { padding: 18px; }
+
+    .sidebar-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .workspace-panel {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .workspace-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .workspace-grid .card,
+    .workspace-stack .card {
+      padding: 18px;
+    }
+
+    .watchlist {
+      display: grid;
+      gap: 12px;
+    }
+
+    .watch-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(160,190,225,0.10);
+    }
+
+    .watch-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .watch-row .sym { font-weight: 800; }
+    .watch-row .sub { color: var(--muted); font-size: 12px; }
+    .watch-row .p { font-weight: 800; }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .timeline-item strong { color: var(--text); }
+
+    .signal {
+      display: grid;
+      gap: 12px;
+    }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(160,190,225,0.16);
+      background: rgba(255,255,255,.04);
+    }
+
+    .signal-badge.bullish {
+      background: rgba(52, 211, 153, 0.15);
+      color: #a7f3d0;
+      border-color: rgba(52, 211, 153, 0.24);
+    }
+
+    .signal-badge.bearish {
+      background: rgba(251, 113, 133, 0.14);
+      color: #fecdd3;
+      border-color: rgba(251, 113, 133, 0.24);
+    }
+
+    .searchbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .searchbar input {
+      width: 100%;
+      min-width: 0;
+      border-radius: 12px;
+      border: 1px solid rgba(160,190,225,0.16);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 11px 12px;
+      font: inherit;
+    }
+
+    .searchbar input::placeholder { color: #8ca0bf; }
+
+    .search-hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .search-status {
+      color: var(--muted);
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 8px;
+    }
+
+    .search-result {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(160,190,225,0.14);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+    }
+
+    .search-result:hover {
+      background: rgba(96, 165, 250, 0.08);
+      border-color: rgba(96, 165, 250, 0.24);
+    }
+
+    .search-result .meta {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .search-result .symbol {
+      font-size: 13px;
+    }
+
+    .search-result .name {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .search-result .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .search-result .actions .btn {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .search-result .tag {
+      color: #dbeafe;
+      font-size: 11px;
+      white-space: nowrap;
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(96,165,250,0.14);
+      border: 1px solid rgba(96,165,250,0.18);
+    }
+
+    .signal-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .signal-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .signal-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(160,190,225,0.12);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .signal-chip strong {
+      color: var(--text);
+    }
+
+    .signal-chip .chip-label {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .signal-chip.bullish {
+      border-color: rgba(52, 211, 153, 0.22);
+      background: rgba(52, 211, 153, 0.08);
+      color: #bbf7d0;
+    }
+
+    .signal-chip.bearish {
+      border-color: rgba(251, 113, 133, 0.22);
+      background: rgba(251, 113, 133, 0.08);
+      color: #fecdd3;
+    }
+
+    .signal-chip.neutral {
+      border-color: rgba(96, 165, 250, 0.18);
+      background: rgba(96, 165, 250, 0.06);
+      color: #dbeafe;
+    }
+
+    .signal-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .signal-row strong {
+      color: var(--text);
+    }
+
+    .error {
+      color: #fecaca;
+      font-size: 13px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.22);
+      padding: 12px 14px;
+      border-radius: 14px;
+      display: none;
+    }
+
+    .popout-shell[hidden] { display: none !important; }
+
+    body.popout-mode {
+      overflow: hidden;
+    }
+
+    .popout-shell {
+      min-height: 100vh;
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 18px;
+    }
+
+    .popout-panel {
+      min-height: calc(100vh - 128px);
+    }
+
+    .popout-panel .board {
+      min-height: calc(100vh - 220px);
+    }
+
+    .popout-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .popout-meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .popout-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .popout-mode:not(.overview-popout-mode) .shell,
+    .popout-mode:not(.overview-popout-mode) .topbar,
+    .popout-mode:not(.overview-popout-mode) .side,
+    .popout-mode:not(.overview-popout-mode) .module-view,
+    .popout-mode:not(.overview-popout-mode) .main-column,
+    .popout-mode:not(.overview-popout-mode) .remove-stock,
+    .popout-mode:not(.overview-popout-mode) .popout-stock {
+      display: none !important;
+    }
+
+    @media (max-width: 1200px) {
+      body { overflow: auto; }
+      .shell { height: auto; overflow: auto; }
+      .content { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .shell { padding: 14px; }
+      .cards, .hero-metrics { grid-template-columns: 1fr; }
+      .price { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" id="appShell">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn primary topbar-toggle" id="sidebarToggleBtn" type="button" aria-expanded="false">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+        <div class="brand">
+          <div class="logo">MM</div>
+          <div>
+            <h1 id="pageTitle">Meridian Markets</h1>
+            <div class="subtitle" id="topbarSubtitle">Yahoo Finance-backed quotes, selectable time frames, mini-trends, and auto-refresh every 30 seconds</div>
+          </div>
+        </div>
+      </div>
+      <div class="status"><span class="pulse"></span><span id="statusText">Connecting…</span></div>
+    </header>
+
+    <main class="content">
+      <aside class="side">
+        <div class="card sidebar-rail">
+          <div class="panel-title">Sidebar</div>
+          <button class="btn primary sidebar-tab" type="button" aria-current="page" data-sidebar-tab="Profile">Profile</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Dashboard">Dashboard</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Market">Market</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Trading">Trading</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Wallet">Wallet</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Settings">Settings</button>
+          <div class="sidebar-spacer"></div>
+          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Log Out">Log Out</button>
+        </div>
+      </aside>
+
+      <section class="panel module-view" id="moduleView" hidden>
+        <div class="card module-card">
+          <div class="module-empty">
+            <div class="panel-title">Module</div>
+            <h2 id="moduleViewTitle">Profile Page Coming Soon</h2>
+            <p id="moduleViewCopy">This page is coming soon.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="main-column">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Market Overview</div>
+              <h2>Tracked symbols</h2>
+              <p>Prices are fetched from Yahoo Finance via yfinance server-side and rendered in the browser.</p>
+            </div>
+            <div class="controls">
+              <button class="btn icon-btn popout-overview" id="overviewPopoutBtn" type="button" aria-label="Pop out market overview" title="Pop out market overview">↗</button>
+              <div class="range-group" id="rangeControls" aria-label="Time frame selector"></div>
+              <button class="btn" id="refreshBtn">Refresh now</button>
+            </div>
+          </div>
+          <div class="board">
+            <div class="cards" id="cardsGrid"></div>
+
+            <div class="error" id="errorBox"></div>
+          </div>
+        </section>
+
+        <section class="panel workspace-panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Workspace</div>
+              <h2>Watchlist and market notes</h2>
+              <p>These sections stay in the main workspace so we can decide each sidebar module later.</p>
+            </div>
+          </div>
+          <div class="workspace-grid">
+            <div class="workspace-stack">
+              <div class="card">
+                <div class="panel-title">Add view</div>
+                <div class="searchbar">
+                  <input id="stockSearch" type="search" placeholder="Search ticker or company name" autocomplete="off" />
+                  <button class="btn primary" id="stockSearchBtn">Search</button>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+              </div>
+
+              <div class="card">
+                <div class="panel-title">Watchlist</div>
+                <div class="watchlist" id="watchlistList"></div>
+              </div>
+
+              <div class="card">
+                <div class="panel-title">Market signal</div>
+                <div class="signal">
+                  <div class="signal-list" id="signalList"></div>
+                  <div class="signal-grid">
+                    <div class="signal-row"><strong>Bias</strong><span id="signalBias">—</span></div>
+                    <div class="signal-row"><strong>Sell risk</strong><span id="signalRisk">—</span></div>
+                    <div class="signal-row"><strong>Reason</strong><span id="signalReason">—</span></div>
+                    <div class="signal-row"><strong>Note</strong><span>Informational only, not financial advice.</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="popout-shell" id="popoutShell" hidden>
+    <header class="topbar popout-topbar">
+      <div class="brand">
+        <div class="logo">MM</div>
+        <div>
+          <h1 id="popoutPageTitle">Stock View Pop-out</h1>
+          <div class="popout-meta" id="popoutMeta">Open a single stock card in its own window.</div>
+        </div>
+      </div>
+      <div class="popout-actions">
+        <div class="status"><span class="pulse"></span><span id="popoutStatusText">Ready</span></div>
+        <button class="btn" id="popoutCloseBtn" type="button">Close window</button>
+      </div>
+    </header>
+
+    <section class="panel popout-panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Stock View</div>
+          <h2 id="popoutSymbolTitle">—</h2>
+          <p>Separate window view for a single tracked symbol.</p>
+        </div>
+      </div>
+      <div class="board">
+        <div class="cards" id="popoutCardsGrid"></div>
+        <div class="error" id="popoutErrorBox"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const DEFAULT_STOCK_VIEW = ["SPGI", "SPFF", "BCBC", "BTM"];
+    const STORAGE_PREFIX = "MeridianMarkets";
+    const LEGACY_STORAGE_PREFIX = "stock-dashboard";
+    const STOCK_VIEW_KEY = `${STORAGE_PREFIX}.stockview`;
+    const WATCHLIST_KEY = `${STORAGE_PREFIX}.watchlist`;
+    const SIDEBAR_KEY = `${STORAGE_PREFIX}.sidebar-collapsed`;
+    const LEGACY_STOCK_VIEW_KEY = `${LEGACY_STORAGE_PREFIX}.stockview`;
+    const LEGACY_WATCHLIST_KEY = `${LEGACY_STORAGE_PREFIX}.watchlist`;
+    const LEGACY_SIDEBAR_KEY = `${LEGACY_STORAGE_PREFIX}.sidebar-collapsed`;
+    const urlParams = new URLSearchParams(window.location.search);
+    const popoutTarget = (urlParams.get("popout") || "").trim().toLowerCase();
+    const isPopoutMode = Boolean(popoutTarget);
+    const isOverviewPopout = popoutTarget === "overview";
+    const RANGE_OPTIONS = [
+      ["1d", "1d"],
+      ["5d", "5d"],
+      ["1m", "1m"],
+      ["6m", "6m"],
+      ["ytd", "ytd"],
+      ["1y", "1y"],
+      ["5y", "5y"],
+    ];
+    const BASE_NAMES = {
+      SPGI: "S&P Global Inc.",
+      SPFF: "Global X SuperIncome Preferred ETF",
+      BCBC: "Bitcoin Bancorp",
+      BTM: "Bitcoin Depot Inc.",
+    };
+    const palette = ["#60a5fa", "#34d399", "#f59e0b", "#f472b6", "#a78bfa", "#22d3ee", "#fb7185", "#f97316", "#84cc16"];
+    const colors = { SPGI: "#60a5fa", SPFF: "#34d399", BCBC: "#f59e0b", BTM: "#f472b6" };
+    let stockViewSymbols = [...DEFAULT_STOCK_VIEW];
+    let watchlistSymbols = [];
+    const symbolInfo = Object.fromEntries(DEFAULT_STOCK_VIEW.map(sym => [sym, { name: BASE_NAMES[sym] || sym }]));
+    const history = Object.fromEntries(DEFAULT_STOCK_VIEW.map(sym => [sym, []]));
+    const sparkState = Object.fromEntries(DEFAULT_STOCK_VIEW.map(sym => [sym, { hoverIndex: null }]));
+    let autoRefresh = true;
+    let refreshTimer = null;
+    let selectedRange = "1d";
+
+    const fmtPrice = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtInt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
+    const fmtPct = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: "always" });
+
+    const els = Object.fromEntries([
+      "statusText", "refreshBtn", "errorBox", "rangeControls",
+      "signalBias", "signalReason", "signalList", "signalRisk",
+      "cardsGrid", "watchlistList", "stockSearch", "stockSearchBtn", "searchResults", "searchStatus",
+      "marketSignalBadge", "marketSignalBias", "marketSignalReason", "marketSignalList", "marketSignalRisk",
+      "statusText", "errorBanner", "sidebarToggleBtn", "pageTitle", "overviewPopoutBtn", "topbarSubtitle",
+      "moduleView", "moduleViewTitle", "moduleViewCopy",
+      "appShell", "popoutShell", "popoutCardsGrid", "popoutCloseBtn", "popoutSymbolTitle", "popoutStatusText", "popoutErrorBox", "popoutPageTitle", "popoutMeta"
+    ].map(id => [id, document.getElementById(id)]));
+    const appShell = document.getElementById("appShell");
+    const mainColumn = document.querySelector(".main-column");
+    const sidebarTabs = [...document.querySelectorAll("[data-sidebar-tab]")];
+    let sidebarCollapsed = true;
+    let dashboardReady = false;
+    let activeSidebarTab = null;
+
+    function applySidebarState() {
+      if (!appShell) return;
+      appShell.classList.toggle("sidebar-collapsed", sidebarCollapsed);
+      if (els.sidebarToggleBtn) {
+        els.sidebarToggleBtn.setAttribute("aria-expanded", sidebarCollapsed ? "false" : "true");
+      }
+      try {
+        localStorage.setItem(SIDEBAR_KEY, sidebarCollapsed ? "1" : "0");
+      } catch {
+        // ignore storage failures
+      }
+      persistDashboardState();
+    }
+
+    function readStoredJson(primaryKey, legacyKey) {
+      try {
+        return localStorage.getItem(primaryKey) ?? (legacyKey ? localStorage.getItem(legacyKey) : null);
+      } catch {
+        return null;
+      }
+    }
+
+    function toggleSidebar() {
+      sidebarCollapsed = !sidebarCollapsed;
+      applySidebarState();
+    }
+
+    function setTopbarTitle(title) {
+      if (els.pageTitle) {
+        els.pageTitle.textContent = title;
+      }
+      document.title = title;
+    }
+
+    function setTopbarSubtitle(text, visible = true) {
+      if (!els.topbarSubtitle) return;
+      els.topbarSubtitle.textContent = text || "";
+      els.topbarSubtitle.hidden = !visible || !text;
+    }
+
+    function showModulePage(label) {
+      activeSidebarTab = label;
+      sidebarTabs.forEach(btn => {
+        const isActive = btn.dataset.sidebarTab === label;
+        btn.classList.toggle("primary", isActive);
+        btn.setAttribute("aria-current", isActive ? "page" : "false");
+      });
+      setTopbarTitle(label);
+      setTopbarSubtitle("", false);
+      if (els.moduleViewTitle) {
+        els.moduleViewTitle.textContent = `${label} Page Coming Soon`;
+      }
+      if (els.moduleViewCopy) {
+        els.moduleViewCopy.textContent = `This ${label.toLowerCase()} page is coming soon.`;
+      }
+      if (els.moduleView) {
+        els.moduleView.hidden = false;
+      }
+      if (mainColumn) {
+        mainColumn.hidden = true;
+      }
+    }
+
+    function showDashboardHome() {
+      activeSidebarTab = "Dashboard";
+      sidebarTabs.forEach(btn => {
+        const isPrimary = btn.dataset.sidebarTab === "Dashboard";
+        btn.classList.toggle("primary", isPrimary);
+        btn.setAttribute("aria-current", isPrimary ? "page" : "false");
+      });
+      setTopbarTitle("Meridian Markets");
+      setTopbarSubtitle("Yahoo Finance-backed quotes, selectable time frames, mini-trends, and auto-refresh every 30 seconds", true);
+      if (els.moduleView) {
+        els.moduleView.hidden = true;
+      }
+      if (mainColumn) {
+        mainColumn.hidden = false;
+      }
+    }
+
+    function openMarketOverviewPopout() {
+      const api = window.pywebview?.api;
+      if (api?.open_market_overview_popout) {
+        Promise.resolve(api.open_market_overview_popout()).catch(err => {
+          showError(`Could not open market overview pop-out: ${err?.message || err}`);
+        });
+        return;
+      }
+      showError("Open the desktop app to pop out the market overview.");
+    }
+
+    function applyPopoutMode(target) {
+      if (!isPopoutMode) return;
+      document.body.classList.add("popout-mode");
+      if (target === "overview") {
+        document.body.classList.add("overview-popout-mode");
+        if (els.appShell) els.appShell.hidden = false;
+        if (els.popoutShell) els.popoutShell.hidden = true;
+        if (els.moduleView) els.moduleView.hidden = true;
+        if (mainColumn) mainColumn.hidden = false;
+        setTopbarTitle("Market Overview");
+        setTopbarSubtitle("", false);
+        return;
+      }
+      if (els.appShell) els.appShell.hidden = true;
+      if (els.popoutShell) els.popoutShell.hidden = false;
+      if (els.cardsGrid && els.popoutCardsGrid) {
+        els.cardsGrid = els.popoutCardsGrid;
+      }
+      if (els.popoutPageTitle) els.popoutPageTitle.textContent = `${target} Stock View`;
+      if (els.popoutSymbolTitle) els.popoutSymbolTitle.textContent = `${target} Stock View`;
+      if (els.popoutMeta) els.popoutMeta.textContent = `Live pop-out for ${target}.`;
+      setTopbarTitle(`${target} Stock View`);
+      setTopbarSubtitle("", false);
+    }
+
+    function setPopoutMessage(message) {
+      if (els.popoutStatusText) els.popoutStatusText.textContent = message;
+    }
+
+    function setPopoutError(message) {
+      if (!els.popoutErrorBox) return;
+      els.popoutErrorBox.style.display = message ? "block" : "none";
+      els.popoutErrorBox.textContent = message || "";
+    }
+
+    function normalizeSymbol(symbol) {
+      return (symbol || "").trim().toUpperCase();
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function money(v) {
+      return v == null || Number.isNaN(v) ? "—" : fmtPrice.format(v);
+    }
+
+    function shares(v) {
+      return v == null ? "—" : fmtInt.format(v);
+    }
+
+    function pct(v) {
+      return v == null || Number.isNaN(v) ? "—" : `${fmtPct.format(v)}%`;
+    }
+
+    function sma(values, window) {
+      if (!values.length) return null;
+      const slice = values.slice(Math.max(0, values.length - window));
+      if (!slice.length) return null;
+      return slice.reduce((sum, v) => sum + v, 0) / slice.length;
+    }
+
+    function symbolName(symbol) {
+      return symbolInfo[symbol]?.name || BASE_NAMES[symbol] || symbol;
+    }
+
+    function colorForSymbol(symbol) {
+      if (!colors[symbol]) {
+        let hash = 0;
+        for (let i = 0; i < symbol.length; i++) hash = (hash * 31 + symbol.charCodeAt(i)) >>> 0;
+        colors[symbol] = palette[hash % palette.length];
+      }
+      return colors[symbol];
+    }
+
+    function ensureSymbolState(symbol, name) {
+      const sym = normalizeSymbol(symbol);
+      if (!sym) return;
+      if (!history[sym]) history[sym] = [];
+      if (!sparkState[sym]) sparkState[sym] = { hoverIndex: null };
+      if (name) symbolInfo[sym] = { name };
+      colorForSymbol(sym);
+    }
+
+    function loadWatchlist() {
+      try {
+        const raw = readStoredJson(WATCHLIST_KEY, LEGACY_WATCHLIST_KEY);
+        if (!raw) return { symbols: [], names: {} };
+        const parsed = JSON.parse(raw);
+        const symbols = Array.isArray(parsed?.symbols) ? parsed.symbols.map(normalizeSymbol).filter(Boolean) : [];
+        const names = parsed?.names && typeof parsed.names === "object" ? parsed.names : {};
+        return { symbols: [...new Set(symbols.filter(sym => !stockViewSymbols.includes(sym)))], names };
+      } catch {
+        return { symbols: [], names: {} };
+      }
+    }
+
+    function saveWatchlist() {
+      try {
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify({
+          symbols: watchlistSymbols,
+          names: Object.fromEntries(watchlistSymbols.map(sym => [sym, symbolName(sym)])),
+        }));
+        if (els.searchStatus) {
+          els.searchStatus.textContent = `Saved ${watchlistSymbols.length} watchlist ${watchlistSymbols.length === 1 ? "item" : "items"} locally.`;
+        }
+      } catch {
+        if (els.searchStatus) els.searchStatus.textContent = "Could not save watchlist in this browser.";
+      }
+      persistDashboardState();
+    }
+
+    function setSearchStatus(text) {
+      if (els.searchStatus) els.searchStatus.textContent = text;
+    }
+
+    async function loadDashboardState() {
+      try {
+        const res = await fetch('/api/state', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const stockview = data?.stockview && typeof data.stockview === 'object' ? data.stockview : {};
+          const watchlist = data?.watchlist && typeof data.watchlist === 'object' ? data.watchlist : {};
+          return {
+            stockView: {
+              symbols: Array.isArray(stockview.symbols) ? stockview.symbols.map(normalizeSymbol).filter(Boolean) : [...DEFAULT_STOCK_VIEW],
+              names: stockview.names && typeof stockview.names === 'object' ? stockview.names : {},
+            },
+            watchlist: {
+              symbols: Array.isArray(watchlist.symbols) ? watchlist.symbols.map(normalizeSymbol).filter(Boolean) : [],
+              names: watchlist.names && typeof watchlist.names === 'object' ? watchlist.names : {},
+            },
+            sidebarCollapsed: true,
+          };
+        }
+      } catch {
+        // fall back to browser storage
+      }
+      return {
+        stockView: loadStockView(),
+        watchlist: loadWatchlist(),
+        sidebarCollapsed: true,
+      };
+    }
+
+    function persistDashboardState() {
+      if (!dashboardReady) return;
+      const payload = {
+        stockview: {
+          symbols: stockViewSymbols,
+          names: Object.fromEntries(stockViewSymbols.map(sym => [sym, symbolName(sym)])),
+        },
+        watchlist: {
+          symbols: watchlistSymbols,
+          names: Object.fromEntries(watchlistSymbols.map(sym => [sym, symbolName(sym)])),
+        },
+        sidebarCollapsed,
+      };
+      try {
+        localStorage.setItem(STOCK_VIEW_KEY, JSON.stringify(payload.stockview));
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify(payload.watchlist));
+        localStorage.setItem(SIDEBAR_KEY, sidebarCollapsed ? '1' : '0');
+      } catch {
+        // ignore local storage failures
+      }
+      try {
+        const body = JSON.stringify(payload);
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/api/state', new Blob([body], { type: 'application/json' }));
+        } else {
+          fetch('/api/state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body,
+            keepalive: true,
+          }).catch(() => {});
+        }
+      } catch {
+        // ignore persistence failures
+      }
+    }
+
+    function loadStockView() {
+      try {
+        const raw = readStoredJson(STOCK_VIEW_KEY, LEGACY_STOCK_VIEW_KEY);
+        if (!raw) return { symbols: [...DEFAULT_STOCK_VIEW], names: {} };
+        const parsed = JSON.parse(raw);
+        const symbols = Array.isArray(parsed?.symbols) ? parsed.symbols.map(normalizeSymbol).filter(Boolean) : [];
+        const names = parsed?.names && typeof parsed.names === "object" ? parsed.names : {};
+        const cleaned = [];
+        for (const sym of symbols) {
+          if (!cleaned.includes(sym)) cleaned.push(sym);
+        }
+        return { symbols: cleaned, names };
+
+      } catch {
+        return { symbols: [...DEFAULT_STOCK_VIEW], names: {} };
+      }
+    }
+
+    function saveStockView() {
+      try {
+        localStorage.setItem(STOCK_VIEW_KEY, JSON.stringify({
+          symbols: stockViewSymbols,
+          names: Object.fromEntries(stockViewSymbols.map(sym => [sym, symbolName(sym)])),
+        }));
+      } catch {
+        // ignore
+      }
+      persistDashboardState();
+    }
+
+    function renderStockView() {
+      if (!els.cardsGrid) return;
+      const current = new Set(stockViewSymbols);
+      for (const node of Array.from(els.cardsGrid.querySelectorAll(".stock-card"))) {
+        const sym = node.dataset.symbol;
+        if (!current.has(sym)) node.remove();
+      }
+      if (!stockViewSymbols.length) {
+        els.cardsGrid.innerHTML = `<div class="search-status">No stocks in the main view yet. Use the search bar to add one.</div>`;
+        return;
+      }
+      els.cardsGrid.querySelectorAll(".search-status").forEach(node => node.remove());
+      for (const symbol of stockViewSymbols) {
+        if (document.getElementById(`card-${symbol}`)) continue;
+        createStockCard(symbol);
+      }
+    }
+
+    function createStockCard(symbol) {
+      if (!els.cardsGrid || document.getElementById(`card-${symbol}`)) return;
+      const article = document.createElement("article");
+      article.className = "card stock-card";
+      article.id = `card-${symbol}`;
+      article.dataset.symbol = symbol;
+      article.innerHTML = `
+        <div class="card-head">
+          <div class="symbol-line">
+            <div class="symbol">${escapeHtml(symbol)}</div>
+            <div class="name" id="name-${symbol}">${escapeHtml(symbolName(symbol))}</div>
+          </div>
+          <div class="card-actions">
+            <div class="pill"><span class="dot"></span><span id="stamp-${symbol}">Live</span></div>
+            <button type="button" class="remove-stock" data-remove-stock-symbol="${escapeHtml(symbol)}">Remove from stock view</button>
+          </div>
+        </div>
+        <div class="price-row">
+          <div class="price" id="price-${symbol}">—</div>
+          <div class="change" id="change-${symbol}">—</div>
+        </div>
+        <canvas id="spark-${symbol}" width="900" height="180"></canvas>
+        <div class="spark-tooltip" id="tooltip-${symbol}"></div>
+        <div class="grid">
+          <div class="kv"><div class="k">Open</div><div class="v" id="open-${symbol}">—</div></div>
+          <div class="kv"><div class="k">Day high / low</div><div class="v" id="hl-${symbol}">—</div></div>
+          <div class="kv"><div class="k">Volume</div><div class="v" id="vol-${symbol}">—</div></div>
+          <div class="kv"><div class="k">Last update</div><div class="v" id="update-${symbol}">—</div></div>
+        </div>
+      `;
+      els.cardsGrid.appendChild(article);
+      colorForSymbol(symbol);
+    }
+
+    function addToStockView(symbol, name) {
+      const sym = normalizeSymbol(symbol);
+      if (!sym) return false;
+      if (stockViewSymbols.includes(sym)) {
+        if (name) symbolInfo[sym] = { name };
+        setSearchStatus(`${sym} is already in the stock view.`);
+        saveStockView();
+        renderStockView();
+        return false;
+      }
+      ensureSymbolState(sym, name);
+      stockViewSymbols = [...stockViewSymbols, sym];
+      saveStockView();
+      renderStockView();
+      refresh();
+      setSearchStatus(`Added ${sym} to the stock view.`);
+      return true;
+    }
+
+    function removeFromStockView(symbol) {
+      const sym = normalizeSymbol(symbol);
+      if (!sym || !stockViewSymbols.includes(sym)) return false;
+      stockViewSymbols = stockViewSymbols.filter(s => s !== sym);
+      document.getElementById(`card-${sym}`)?.remove();
+      saveStockView();
+      renderStockView();
+      refresh();
+      setSearchStatus(`Removed ${sym} from the stock view.`);
+      return true;
+    }
+
+    function renderWatchlist() {
+      if (!els.watchlistList) return;
+      const current = new Set(watchlistSymbols);
+      for (const node of Array.from(els.watchlistList.querySelectorAll(".watch-row"))) {
+        const sym = node.dataset.symbol;
+        if (!current.has(sym)) node.remove();
+      }
+      if (!watchlistSymbols.length) {
+        els.watchlistList.innerHTML = `<div class="search-status">No symbols in the watchlist yet. Use the search box to add one.</div>`;
+        return;
+      }
+      els.watchlistList.querySelectorAll(".search-status").forEach(node => node.remove());
+      for (const symbol of watchlistSymbols) {
+        if (document.getElementById(`watch-row-${symbol}`)) continue;
+        const row = document.createElement("div");
+        row.className = "watch-row";
+        row.id = `watch-row-${symbol}`;
+        row.dataset.symbol = symbol;
+        row.innerHTML = `
+          <div class="sym">${escapeHtml(symbol)}</div>
+          <div>
+            <div class="sub" id="watchName-${symbol}">${escapeHtml(symbolName(symbol))}</div>
+            <div class="sub" id="watch-${symbol}">—</div>
+          </div>
+          <div class="p" id="watchPrice-${symbol}">—</div>
+          <button type="button" class="remove-stock" data-remove-watch-symbol="${escapeHtml(symbol)}">Remove</button>
+        `;
+        els.watchlistList.appendChild(row);
+      }
+    }
+
+    function addToWatchlist(symbol, name) {
+      const sym = normalizeSymbol(symbol);
+      if (!sym) return false;
+      if (watchlistSymbols.includes(sym)) {
+        if (name) symbolInfo[sym] = { name };
+        setSearchStatus(`${sym} is already in the watchlist.`);
+        saveWatchlist();
+        renderWatchlist();
+        return false;
+      }
+      ensureSymbolState(sym, name);
+      watchlistSymbols = [...watchlistSymbols, sym];
+      saveWatchlist();
+      renderWatchlist();
+      refresh();
+      setSearchStatus(`Added ${sym} to the watchlist.`);
+      return true;
+    }
+
+    function removeFromWatchlist(symbol) {
+      const sym = normalizeSymbol(symbol);
+      if (!sym || !watchlistSymbols.includes(sym)) return false;
+      watchlistSymbols = watchlistSymbols.filter(s => s !== sym);
+      document.getElementById(`watch-row-${sym}`)?.remove();
+      saveWatchlist();
+      renderWatchlist();
+      refresh();
+      setSearchStatus(`Removed ${sym} from the watchlist.`);
+      return true;
+    }
+
+    async function searchStocks() {
+      const query = els.stockSearch?.value.trim();
+      if (!query) {
+        setSearchStatus("Type a ticker or company name first.");
+        if (els.searchResults) els.searchResults.innerHTML = "";
+        return [];
+      }
+      setSearchStatus(`Searching for “${query}”…`);
+      if (els.searchResults) els.searchResults.innerHTML = "";
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      renderSearchResults(data.results || [], query);
+      setSearchStatus((data.results || []).length ? `Found ${(data.results || []).length} result${(data.results || []).length === 1 ? "" : "s"}.` : `No results for “${query}”.`);
+      return data.results || [];
+    }
+
+    async function addSearchToWatchlist() {
+      try {
+        const results = await searchStocks();
+        if (!results.length) return;
+        const query = normalizeSymbol(els.stockSearch?.value || "");
+        const exact = results.find(result => normalizeSymbol(result.symbol) === query);
+        const chosen = exact || results[0];
+        addToWatchlist(chosen.symbol, chosen.name);
+      } catch (err) {
+        setSearchStatus(`Search failed: ${err.message}`);
+      }
+    }
+
+    function renderSearchResults(results, query) {
+      if (!els.searchResults) return;
+      if (!results.length) {
+        els.searchResults.innerHTML = `<div class="search-status">No matches for “${escapeHtml(query)}”.</div>`;
+        return;
+      }
+      els.searchResults.innerHTML = results.map(result => `
+        <div class="search-result" data-symbol="${escapeHtml(result.symbol)}" data-name="${escapeHtml(result.name)}">
+          <div class="meta">
+            <div class="symbol">${escapeHtml(result.symbol)}</div>
+            <div class="name">${escapeHtml(result.name)}</div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn" data-add-watchlist="${escapeHtml(result.symbol)}" data-name="${escapeHtml(result.name)}">Add to watchlist</button>
+            <button type="button" class="btn" data-add-stockview="${escapeHtml(result.symbol)}" data-name="${escapeHtml(result.name)}">Add to stock view</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function addSearchToStockView() {
+      try {
+        const results = await searchStocks();
+        if (!results.length) return;
+        const query = normalizeSymbol(els.stockSearch?.value || "");
+        const exact = results.find(result => normalizeSymbol(result.symbol) === query);
+        const chosen = exact || results[0];
+        addToStockView(chosen.symbol, chosen.name);
+      } catch (err) {
+        setSearchStatus(`Search failed: ${err.message}`);
+      }
+    }
+
+
+    function seriesSignal(points) {
+      const values = points.map(p => p[1]).filter(v => Number.isFinite(v));
+      if (values.length < 4) {
+        return { label: "Neutral", tone: "neutral", score: 0, reason: "Not enough history yet.", momentumPct: null, periodPct: null };
+      }
+
+      const shortWindow = selectedRange === "1d" ? 5 : selectedRange === "5d" ? 8 : selectedRange === "1m" ? 10 : selectedRange === "6m" ? 12 : selectedRange === "ytd" ? 14 : selectedRange === "1y" ? 18 : 24;
+      const longWindow = Math.min(values.length, Math.max(shortWindow * 3, 10));
+      const shortMA = sma(values, shortWindow);
+      const longMA = sma(values, longWindow);
+      const latest = values[values.length - 1];
+      const first = values[0];
+      const momentumWindow = Math.min(values.length - 1, Math.max(3, Math.floor(shortWindow / 2)));
+      const momentumBase = values[values.length - 1 - momentumWindow];
+      const momentumPct = momentumBase ? ((latest - momentumBase) / momentumBase) * 100 : 0;
+      const periodPct = first ? ((latest - first) / first) * 100 : 0;
+
+      const indicators = {
+        aboveShort: shortMA == null ? false : latest >= shortMA,
+        shortAboveLong: shortMA != null && longMA != null ? shortMA >= longMA : false,
+        momentumPositive: momentumPct >= 0,
+        periodPositive: periodPct >= 0,
+      };
+      const bullishChecks = Object.values(indicators).filter(Boolean).length;
+      const bearishChecks = 4 - bullishChecks;
+
+      let score = bullishChecks - bearishChecks;
+      score = Math.max(-4, Math.min(4, score));
+
+      let label = "Neutral";
+      let tone = "neutral";
+      let reason = "Trend is neutral and the signal is undecided.";
+      if (bullishChecks === 4) {
+        label = "Bullish";
+        tone = "bullish";
+        reason = "All trend checks agree: price, trend, and momentum are aligned.";
+      } else if (bullishChecks >= 3) {
+        label = "Bullish leaning";
+        tone = "bullish";
+        reason = "Most trend checks agree, but one filter is still neutral.";
+      } else if (bearishChecks === 4) {
+        label = "Bearish";
+        tone = "bearish";
+        reason = "All trend checks point lower: price, trend, and momentum are weak.";
+      } else if (bearishChecks >= 3) {
+        label = "Bearish leaning";
+        tone = "bearish";
+        reason = "Most trend checks are negative, but the move is not fully confirmed.";
+      }
+
+      const riskFlags = [];
+      if (momentumPct < 0) riskFlags.push("momentum is fading");
+      if (shortMA != null && latest < shortMA) riskFlags.push("price is below the short trend");
+      if (shortMA != null && longMA != null && shortMA < longMA) riskFlags.push("short trend is below the long trend");
+      const risk = riskFlags.length ? `Sell risk is rising because ${riskFlags.join(" and ")}.` : "Sell risk is low right now.";
+
+      return { label, tone, score, reason, momentumPct, periodPct, risk, indicators };
+    }
+
+    function updateMarketSignal() {
+      if (!els.signalBias || !els.signalReason || !els.signalList || !els.signalRisk) return;
+      const signals = stockViewSymbols.map(symbol => ({ symbol, ...seriesSignal(history[symbol] || []) }));
+      const avg = signals.length ? signals.reduce((sum, s) => sum + s.score, 0) / signals.length : 0;
+      const bullishSignals = signals.filter(s => s.label === "Bullish" || s.label === "Bullish leaning");
+      const bearishSignals = signals.filter(s => s.label === "Bearish" || s.label === "Bearish leaning");
+      const strongest = signals.reduce((best, cur) => Math.abs(cur.score) > Math.abs(best.score) ? cur : best, signals[0] || { symbol: "", label: "Neutral", tone: "neutral", score: 0, reason: "No data.", risk: "No data." });
+
+      let overall = "Neutral";
+      let tone = "neutral";
+      if (avg >= 2.5 && bullishSignals.length >= 2) { overall = "Bullish"; tone = "bullish"; }
+      else if (avg >= 1.25) { overall = "Bullish leaning"; tone = "bullish"; }
+      else if (avg <= -2.5 && bearishSignals.length >= 2) { overall = "Bearish"; tone = "bearish"; }
+      else if (avg <= -1.25) { overall = "Bearish leaning"; tone = "bearish"; }
+
+      els.signalBias.textContent = signals.map(s => `${s.symbol}: ${s.label}`).join(" · ") || "—";
+      els.signalRisk.textContent = strongest?.symbol ? `${strongest.symbol}: ${strongest.risk}` : "—";
+      els.signalReason.textContent = strongest?.symbol
+        ? `${strongest.symbol} is the strongest signal: ${strongest.reason}`
+        : "No signal yet.";
+      els.signalList.innerHTML = signals.map(s => `<div class="signal-chip ${s.tone}" title="${s.symbol}: ${s.reason}"><strong>${s.symbol}</strong><span class="chip-label">${s.label}</span></div>`).join("");
+    }
+
+    function isoTime(ts) {
+      return new Date(ts * 1000).toLocaleString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function renderRangeControls() {
+      if (!els.rangeControls) return;
+      els.rangeControls.innerHTML = "";
+      for (const [key, label] of RANGE_OPTIONS) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `range-btn${key === selectedRange ? " active" : ""}`;
+        btn.textContent = label;
+        btn.setAttribute("aria-pressed", key === selectedRange ? "true" : "false");
+        btn.addEventListener("click", () => {
+          if (selectedRange === key) return;
+          selectedRange = key;
+          renderRangeControls();
+          refresh();
+        });
+        els.rangeControls.appendChild(btn);
+      }
+    }
+
+    function formatHoverTime(ts) {
+      const date = new Date(ts * 1000);
+      const options = selectedRange === "1d" || selectedRange === "5d"
+        ? { hour: "2-digit", minute: "2-digit" }
+        : { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" };
+      return date.toLocaleString([], options);
+    }
+
+    function bindSparkInteractions(symbol) {
+      const canvas = document.getElementById(`spark-${symbol}`);
+      const tooltip = document.getElementById(`tooltip-${symbol}`);
+      if (!canvas || !tooltip || canvas.dataset.bound === "1") return;
+      canvas.dataset.bound = "1";
+
+      const clearHover = () => {
+        sparkState[symbol].hoverIndex = null;
+        tooltip.style.display = "none";
+        drawSparkline(symbol);
+      };
+
+      canvas.addEventListener("mouseleave", clearHover);
+      canvas.addEventListener("blur", clearHover);
+      canvas.addEventListener("mousemove", event => {
+        const points = history[symbol];
+        if (!points || points.length < 2) return;
+        const rect = canvas.getBoundingClientRect();
+        const cardRect = canvas.closest(".card")?.getBoundingClientRect() || rect;
+        const x = event.clientX - rect.left;
+        const index = Math.max(0, Math.min(points.length - 1, Math.round((x / rect.width) * (points.length - 1))));
+        sparkState[symbol].hoverIndex = index;
+        const [ts, price] = points[index];
+        tooltip.innerHTML = `<div class="meta">${formatHoverTime(ts)}</div><div class="price">${money(price)}</div>`;
+        tooltip.style.display = "block";
+        tooltip.style.left = `${event.clientX - cardRect.left}px`;
+        tooltip.style.top = `${Math.max(20, event.clientY - cardRect.top)}px`;
+        drawSparkline(symbol, index);
+      });
+    }
+
+    function drawSparkline(symbol, hoverIndex = null) {
+      const canvas = document.getElementById(`spark-${symbol}`);
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const points = history[symbol];
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = "rgba(255,255,255,0.02)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "rgba(160,190,225,0.08)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i++) {
+        const y = (h / 4) * i;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      if (points.length < 2) return;
+      const values = points.map(p => p[1]);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const pad = (max - min) * 0.18 || (max * 0.01) || 1;
+      const lo = min - pad;
+      const hi = max + pad;
+      const xStep = w / Math.max(points.length - 1, 1);
+      const yFor = v => h - ((v - lo) / (hi - lo)) * (h - 26) - 13;
+      const color = colorForSymbol(symbol);
+
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, `${color}44`);
+      grad.addColorStop(1, `${color}00`);
+      ctx.beginPath();
+      points.forEach((p, i) => {
+        const x = i * xStep;
+        const y = yFor(p[1]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.beginPath();
+      points.forEach((p, i) => {
+        const x = i * xStep;
+        const y = yFor(p[1]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      const activeHover = hoverIndex ?? sparkState[symbol].hoverIndex;
+      if (activeHover != null && points[activeHover]) {
+        const [ts, price] = points[activeHover];
+        const x = activeHover * xStep;
+        const y = yFor(price);
+        ctx.strokeStyle = "rgba(231, 238, 249, 0.55)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, 10);
+        ctx.lineTo(x, h - 10);
+        ctx.stroke();
+        ctx.fillStyle = "#e7eef9";
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(x, y, 7, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        const last = points[points.length - 1];
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc((points.length - 1) * xStep, yFor(last[1]), 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function showError(msg) {
+      if (!msg) {
+        if (els.errorBox) {
+          els.errorBox.style.display = "none";
+          els.errorBox.textContent = "";
+        }
+        if (isPopoutMode) setPopoutError("");
+        return;
+      }
+      if (els.errorBox) {
+        els.errorBox.style.display = "block";
+        els.errorBox.textContent = msg;
+      }
+      if (isPopoutMode) setPopoutError(msg);
+    }
+
+    function updateCard(symbol, quote, historyPoints) {
+      const price = quote.close;
+      const periodStart = historyPoints.length > 0 ? historyPoints[0][1] : null;
+      const periodEnd = historyPoints.length > 0 ? historyPoints[historyPoints.length - 1][1] : price;
+      const periodChange = periodStart != null && periodEnd != null ? periodEnd - periodStart : quote.change;
+      const periodPct = periodStart != null && periodStart !== 0 && periodEnd != null
+        ? ((periodEnd - periodStart) / periodStart) * 100
+        : quote.change_pct;
+      const up = periodChange == null ? true : periodChange >= 0;
+      const trendClass = up ? "up" : "down";
+      const arrow = up ? "▲" : "▼";
+      const updateStamp = quote.date && quote.time ? `${quote.date} ${quote.time}` : "Live";
+      const rangeLabel = selectedRange.toUpperCase();
+
+      setText(`price-${symbol}`, money(price));
+      setText(`change-${symbol}`, `${arrow} ${money(periodChange)} (${pct(periodPct)})`);
+      setText(`open-${symbol}`, money(quote.open));
+      setText(`hl-${symbol}`, `${money(quote.high)} / ${money(quote.low)}`);
+      setText(`vol-${symbol}`, shares(quote.volume));
+      setText(`update-${symbol}`, updateStamp);
+      setText(`stamp-${symbol}`, updateStamp);
+
+      const watchPriceEl = document.getElementById(`watchPrice-${symbol}`);
+      if (watchPriceEl) watchPriceEl.textContent = money(price);
+      const watchChangeEl = document.getElementById(`watch-${symbol}`);
+      if (watchChangeEl) watchChangeEl.textContent = `Δ ${money(periodChange)} (${pct(periodPct)}) · ${rangeLabel}`;
+      const watchNameEl = document.getElementById(`watchName-${symbol}`);
+      if (watchNameEl) watchNameEl.textContent = symbolName(symbol);
+
+      const changeEl = document.getElementById(`change-${symbol}`);
+      if (changeEl) changeEl.className = `change ${trendClass}`;
+      const nameEl = document.getElementById(`name-${symbol}`);
+      if (nameEl) nameEl.textContent = symbolName(symbol);
+
+      sparkState[symbol].hoverIndex = null;
+      const tooltip = document.getElementById(`tooltip-${symbol}`);
+      if (tooltip) tooltip.style.display = "none";
+      bindSparkInteractions(symbol);
+      drawSparkline(symbol);
+    }
+
+    async function refresh() {
+      if (els.statusText) els.statusText.textContent = `Refreshing ${selectedRange}…`;
+      if (isPopoutMode) setPopoutMessage(`Refreshing ${selectedRange}…`);
+      showError("");
+      const symbols = [...new Set([...stockViewSymbols, ...watchlistSymbols])];
+      try {
+        const res = await fetch(`/api/quotes?symbols=${symbols.join(",")}&range=${selectedRange}`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (els.statusText) els.statusText.textContent = data.errors && Object.keys(data.errors).length ? "Partial data" : "Live";
+        if (isPopoutMode) setPopoutMessage(data.errors && Object.keys(data.errors).length ? "Partial data" : "Live");
+
+        for (const sym of stockViewSymbols) {
+          const q = data.quotes.find(x => x.symbol === sym);
+          if (!q) continue;
+          const series = data.history[sym] || [];
+          history[sym] = series;
+          updateCard(sym, q, series);
+        }
+        for (const sym of watchlistSymbols) {
+          const q = data.quotes.find(x => x.symbol === sym);
+          if (!q) continue;
+          const series = data.history[sym] || [];
+          history[sym] = series;
+          updateCard(sym, q, series);
+        }
+
+        const errors = data.errors || {};
+        if (Object.keys(errors).length) {
+          showError(Object.entries(errors).map(([k, v]) => `${k}: ${v}`).join(" · "));
+        }
+
+        updateMarketSignal();
+      } catch (err) {
+        if (els.statusText) els.statusText.textContent = "Offline";
+        if (isPopoutMode) setPopoutMessage("Offline");
+        showError(`Could not fetch quotes: ${err.message}`);
+      }
+    }
+
+    function startTimer() {
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = setInterval(() => {
+        if (autoRefresh) refresh();
+      }, 30000);
+    }
+
+    async function bootstrap() {
+      const savedState = await loadDashboardState();
+      sidebarCollapsed = savedState.sidebarCollapsed;
+      applySidebarState();
+      stockViewSymbols = savedState.stockView.symbols;
+      watchlistSymbols = savedState.watchlist.symbols;
+      for (const sym of stockViewSymbols) {
+        symbolInfo[sym] = { name: savedState.stockView.names?.[sym] || BASE_NAMES[sym] || sym };
+      }
+      for (const sym of watchlistSymbols) {
+        symbolInfo[sym] = { name: savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym };
+      }
+      for (const sym of [...stockViewSymbols, ...watchlistSymbols]) {
+        ensureSymbolState(sym, symbolInfo[sym]?.name || BASE_NAMES[sym] || sym);
+      }
+
+      if (isPopoutMode) {
+        if (isOverviewPopout) {
+          applyPopoutMode("overview");
+          renderStockView();
+          renderRangeControls();
+          setPopoutMessage("Opening market overview…");
+          refresh();
+          startTimer();
+          return;
+        }
+        const sym = popoutTarget.toUpperCase();
+        const resolvedName = savedState.stockView.names?.[sym] || savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym;
+        stockViewSymbols = [sym];
+        watchlistSymbols = [];
+        symbolInfo[sym] = { name: resolvedName };
+        ensureSymbolState(sym, resolvedName);
+        applyPopoutMode(sym);
+        renderStockView();
+        setPopoutMessage(`Opening ${sym}…`);
+        els.popoutCloseBtn?.addEventListener("click", () => window.close());
+        refresh();
+        startTimer();
+        return;
+      }
+
+      renderStockView();
+      renderWatchlist();
+      renderRangeControls();
+
+      els.refreshBtn?.addEventListener("click", refresh);
+      els.overviewPopoutBtn?.addEventListener("click", openMarketOverviewPopout);
+      els.sidebarToggleBtn?.addEventListener("click", toggleSidebar);
+      sidebarTabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const label = btn.dataset.sidebarTab || btn.textContent.trim();
+          if (label === "Dashboard") {
+            showDashboardHome();
+          } else {
+            showModulePage(label);
+          }
+        });
+      });
+      showDashboardHome();
+      els.stockSearchBtn?.addEventListener("click", () => { searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`)); });
+      els.stockSearch?.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`));
+        }
+      });
+      document.addEventListener("click", event => {
+        const sidebarAction = event.target.closest?.("[data-sidebar-tab]");
+        if (sidebarAction) {
+          event.preventDefault();
+          const label = sidebarAction.dataset.sidebarTab || sidebarAction.textContent.trim();
+          if (label === "Dashboard") {
+            showDashboardHome();
+          } else {
+            showModulePage(label);
+          }
+          return;
+        }
+        const watchAction = event.target.closest?.("[data-add-watchlist]");
+        if (watchAction) {
+          event.preventDefault();
+          addToWatchlist(watchAction.dataset.addWatchlist, watchAction.dataset.name);
+          return;
+        }
+        const stockAction = event.target.closest?.("[data-add-stockview]");
+        if (stockAction) {
+          event.preventDefault();
+          addToStockView(stockAction.dataset.addStockview, stockAction.dataset.name);
+          return;
+        }
+        const watchTarget = event.target.closest?.("[data-remove-watch-symbol]");
+        if (watchTarget) {
+          event.preventDefault();
+          removeFromWatchlist(watchTarget.dataset.removeWatchSymbol);
+          return;
+        }
+        const stockTarget = event.target.closest?.("[data-remove-stock-symbol]");
+        if (stockTarget) {
+          event.preventDefault();
+          removeFromStockView(stockTarget.dataset.removeStockSymbol);
+        }
+      });
+      window.addEventListener("resize", () => [...stockViewSymbols, ...watchlistSymbols].forEach(drawSparkline));
+      dashboardReady = true;
+      persistDashboardState();
+      refresh();
+      startTimer();
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>

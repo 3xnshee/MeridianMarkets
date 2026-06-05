@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Meridian Markets
+Comment=Launch the Meridian Markets desktop app
+Exec=/home/bxnshee/.local/bin/meridian-markets-launcher
+Icon=/home/bxnshee/Scarlet Sync/MeridianMarkets-Dashboard/app.ico
+Terminal=false
+Categories=Finance;Office;Utility;
+StartupNotify=true

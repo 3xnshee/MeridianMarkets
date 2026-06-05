@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+release/
+qt-pos-ui/build/
+qt-pos-ui/CMakeFiles/
+qt-pos-ui/CMakeCache.txt
+qt-pos-ui/cmake_install.cmake
+qt-pos-ui/Makefile
+qt-pos-ui/*.user
+qt-pos-ui/*.autosave
+
+# Generated metadata/artifacts
+build-info.json
+*.zip
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local logs and temp files
+*.log
+*.tmp
+*.bak
