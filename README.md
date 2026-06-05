@@ -60,6 +60,18 @@ These scripts create portable release folders and zip files under `release/`.
 
 If you are on Windows, use `build-windows.bat` to build the EXE locally until a Windows release asset is published.
 
+## Development workflow
+Use a simple branch layout:
+- `dev` for active development and integration
+- `feature/*` for new features
+- `fix/*` for bug fixes
+- `docs/*` for documentation updates
+
+Commit messages should stay short and clear, using Conventional Commits when practical, for example:
+- `feat: add watchlist search`
+- `fix: prevent duplicate saves`
+- `docs: update release instructions`
+
 ## Backend API
 - `GET /api/health` — health check
 - `GET /api/meta` — app metadata and defaults
