@@ -72,6 +72,15 @@ Commit messages should stay short and clear, using Conventional Commits when pra
 - `fix: prevent duplicate saves`
 - `docs: update release instructions`
 
+## Open-source / private integration boundary
+The public repo stays fully usable without any private trading or wallet service.
+- The UI can expose Trading and Wallet tabs without requiring credentials.
+- A private provider can be added later through `window.MERIDIAN_PRIVATE_PROVIDER` or a private backend with the same contract.
+- The public build falls back to a no-op provider in `private/provider.js`.
+- All sensitive auth, wallet, and order-routing logic should live outside the public repo.
+
+See `integrations/README.md` for the provider contract and recommended endpoint shape.
+
 ## Backend API
 - `GET /api/health` — health check
 - `GET /api/meta` — app metadata and defaults
@@ -85,6 +94,7 @@ Commit messages should stay short and clear, using Conventional Commits when pra
 - `build-linux.sh` / `build-windows.bat` — build scripts
 - `package-release.sh` / `package-release.bat` — release packaging
 - `MeridianMarkets.spec` — PyInstaller spec
+- `private/provider.js` — public no-op trading/wallet provider hook
 
 ## Requirements
 - Python 3.11+

@@ -9,6 +9,9 @@ project_dir = Path(sys.argv[0]).resolve().parent
 
 datas, binaries, hiddenimports = collect_all('webview')
 datas += [(str(project_dir / 'index.html'), '.')]
+private_provider = project_dir / 'private' / 'provider.js'
+if private_provider.exists():
+    datas += [(str(private_provider), 'private')]
 build_info = project_dir / 'build-info.json'
 if build_info.exists():
     datas += [(str(build_info), '.')]

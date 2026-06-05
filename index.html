@@ -1127,6 +1127,7 @@
     </section>
   </div>
 
+  <script src="private/provider.js"></script>
   <script>
     const DEFAULT_STOCK_VIEW = ["SPGI", "SPFF", "BCBC", "BTM"];
     const STORAGE_PREFIX = "MeridianMarkets";
@@ -1186,6 +1187,11 @@
     let sidebarCollapsed = true;
     let dashboardReady = false;
     let activeSidebarTab = null;
+    const privateProvider = window.MERIDIAN_PRIVATE_PROVIDER || null;
+
+    function privateProviderIsConnected() {
+      return Boolean(privateProvider && (privateProvider.connected || privateProvider.authorized));
+    }
 
     function applySidebarState() {
       if (!appShell) return;
@@ -1227,6 +1233,20 @@
       els.topbarSubtitle.hidden = !visible || !text;
     }
 
+    function moduleCopyFor(label) {
+      if (label === "Trading") {
+        return privateProviderIsConnected()
+          ? "A private trading connector is connected. This module can now surface authorized account, wallet, and order flows."
+          : "This tab is reserved for a private trading connector. The public build keeps it available but inactive until an authorized provider is supplied.";
+      }
+      if (label === "Wallet") {
+        return privateProviderIsConnected()
+          ? "A private wallet connector is connected. This module can now surface authorized balances and wallet actions."
+          : "This tab is reserved for a private wallet connector. The public build keeps it available but inactive until an authorized provider is supplied.";
+      }
+      return `This ${label.toLowerCase()} page is coming soon.`;
+    }
+
     function showModulePage(label) {
       activeSidebarTab = label;
       sidebarTabs.forEach(btn => {
@@ -1240,7 +1260,7 @@
         els.moduleViewTitle.textContent = `${label} Page Coming Soon`;
       }
       if (els.moduleViewCopy) {
-        els.moduleViewCopy.textContent = `This ${label.toLowerCase()} page is coming soon.`;
+        els.moduleViewCopy.textContent = moduleCopyFor(label);
       }
       if (els.moduleView) {
         els.moduleView.hidden = false;
