@@ -10,10 +10,12 @@ python3 - <<'PY'
 from datetime import datetime, timezone
 from pathlib import Path
 import json
+import os
 
 root = Path.cwd()
 build_info = {
     "version": "0.1.0",
+    "branch": os.environ.get("BUILD_BRANCH", "dev"),
     "build_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ"),
     "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
 }

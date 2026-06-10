@@ -146,6 +146,27 @@
       white-space: nowrap;
     }
 
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .build-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(96, 165, 250, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
     .pulse {
       width: 10px;
       height: 10px;
@@ -210,22 +231,22 @@
     }
 
     .module-card {
-      width: min(420px, 100%);
-      aspect-ratio: 1 / 1;
+      width: min(680px, 100%);
+      min-height: 520px;
       border-radius: 32px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: stretch;
+      justify-content: stretch;
       padding: 28px;
-      text-align: center;
+      text-align: left;
     }
 
     .module-empty {
-      max-width: 320px;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 10px;
+      align-items: stretch;
+      gap: 14px;
     }
 
     .module-empty h2 {
@@ -238,6 +259,359 @@
       margin: 0;
       color: var(--muted);
       line-height: 1.5;
+    }
+
+    .module-extras {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .module-stat {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      display: grid;
+      gap: 6px;
+    }
+
+    .module-stat .k {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .module-stat .v {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .module-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .module-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .module-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .module-note {
+      border-left: 3px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(96, 165, 250, 0.08);
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .profile-shell {
+      display: grid;
+      gap: 16px;
+    }
+
+    .profile-hero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.24), rgba(52, 211, 153, 0.18));
+      border: 1px solid rgba(148, 197, 255, 0.28);
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .profile-hero-copy {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .profile-subtitle {
+      color: var(--muted);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .profile-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .profile-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .profile-field > span {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .profile-field input,
+    .profile-field select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .profile-field select {
+      background: rgba(14, 22, 36, 0.96);
+      color: #f3f7ff;
+      border-color: rgba(148, 163, 184, 0.34);
+    }
+
+    .profile-field select option {
+      background: #0e1624;
+      color: #f3f7ff;
+    }
+
+    .profile-field input:focus,
+    .profile-field select:focus {
+      border-color: rgba(96, 165, 250, 0.55);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .profile-field select:focus {
+      background: rgba(18, 29, 46, 0.98);
+      color: #ffffff;
+    }
+
+    .profile-secret-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .profile-secret-row input {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .profile-secret-toggle {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+    }
+
+    .profile-help {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .profile-summary {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .profile-summary .k {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .profile-summary .v {
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .profile-grid .profile-field:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .auth-shell {
+      height: auto;
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 18px;
+      padding: 22px;
+    }
+
+    .auth-shell[hidden],
+    .shell[hidden],
+    .popout-shell[hidden],
+    .settings-shell[hidden] {
+      display: none !important;
+    }
+
+    .auth-panel {
+      width: min(880px, 100%);
+      margin: 0 auto;
+    }
+
+    .auth-body {
+      display: grid;
+      gap: 16px;
+    }
+
+    .auth-card {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .auth-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .auth-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .auth-field > span {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .auth-field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .auth-field input:focus {
+      border-color: rgba(96, 165, 250, 0.55);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .auth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .auth-help {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .auth-status-card {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .auth-status-card .k {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .auth-status-card .v {
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .auth-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2px 0;
+    }
+
+    .auth-inline-error {
+      color: #fca5a5;
+      font-weight: 600;
+    }
+
+    @media (max-width: 820px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-hero {
+        align-items: flex-start;
+      }
     }
 
     .module-view[hidden],
@@ -307,6 +681,35 @@
 
     .overview-popout-mode .popout-overview {
       display: none !important;
+    }
+
+    .settings-shell {
+      height: 100%;
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 22px;
+      gap: 18px;
+    }
+
+    .settings-shell[hidden] {
+      display: none !important;
+    }
+
+    .settings-shell .settings-panel {
+      min-height: 0;
+    }
+
+    .settings-shell .settings-panel .panel-head {
+      align-items: flex-start;
+    }
+
+    .settings-shell .settings-body {
+      padding: 18px;
+      min-height: 0;
+      overflow: auto;
+      display: grid;
+      align-content: start;
     }
 
     .shell.sidebar-collapsed .sidebar-note,
@@ -1005,21 +1408,21 @@
           </div>
         </div>
       </div>
-      <div class="status"><span class="pulse"></span><span id="statusText">Connecting…</span></div>
+      <div class="topbar-actions">
+        <div class="status"><span class="pulse"></span><span id="statusText">Connecting…</span><span class="build-badge" id="buildBadge" hidden></span></div>
+      </div>
     </header>
 
     <main class="content">
       <aside class="side">
         <div class="card sidebar-rail">
           <div class="panel-title">Sidebar</div>
-          <button class="btn primary sidebar-tab" type="button" aria-current="page" data-sidebar-tab="Profile">Profile</button>
-          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Dashboard">Dashboard</button>
+          <button class="btn primary sidebar-tab" type="button" aria-current="page" data-sidebar-tab="Dashboard">Dashboard</button>
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Market">Market</button>
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Trading">Trading</button>
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Wallet">Wallet</button>
-          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Settings">Settings</button>
           <div class="sidebar-spacer"></div>
-          <button class="btn sidebar-tab" type="button" data-sidebar-tab="Log Out">Log Out</button>
+          <button class="btn sidebar-tab" type="button" data-logout-button="true">Log Out</button>
         </div>
       </aside>
 
@@ -1027,8 +1430,9 @@
         <div class="card module-card">
           <div class="module-empty">
             <div class="panel-title">Module</div>
-            <h2 id="moduleViewTitle">Profile Page Coming Soon</h2>
-            <p id="moduleViewCopy">This page is coming soon.</p>
+            <h2 id="moduleViewTitle">Module</h2>
+            <p id="moduleViewCopy">The sidebar now opens functional app sections instead of placeholders.</p>
+            <div class="module-extras" id="moduleViewExtras"></div>
           </div>
         </div>
       </section>
@@ -1049,7 +1453,6 @@
           </div>
           <div class="board">
             <div class="cards" id="cardsGrid"></div>
-
             <div class="error" id="errorBox"></div>
           </div>
         </section>
@@ -1094,7 +1497,61 @@
           </div>
         </section>
       </div>
+
     </main>
+  </div>
+
+  <div class="auth-shell" id="authShell" hidden>
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">
+          <div class="logo">MM</div>
+          <div>
+            <h1 id="authTitle">Sign in</h1>
+            <div class="subtitle" id="authSubtitle">Use Firebase Authentication to unlock Meridian Markets.</div>
+          </div>
+        </div>
+      </div>
+      <div class="status"><span class="pulse"></span><span id="authStatusText">Connecting to Firebase…</span></div>
+    </header>
+
+    <section class="panel auth-panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Security</div>
+          <h2>Firebase login</h2>
+          <p>Email/password and Google sign-in keep your account access separate from local app preferences.</p>
+        </div>
+      </div>
+      <div class="auth-body" id="authBody"></div>
+    </section>
+  </div>
+
+  <div class="settings-shell" id="settingsShell" hidden>
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn primary topbar-toggle" id="settingsBackBtn" type="button">←</button>
+        <div class="brand">
+          <div class="logo">MM</div>
+          <div>
+            <h1 id="settingsTitle">Settings</h1>
+            <div class="subtitle" id="settingsSubtitle">Account details stay separate from the dashboard.</div>
+          </div>
+        </div>
+      </div>
+      <div class="status"><span class="pulse"></span><span id="settingsStatusText">Ready</span></div>
+    </header>
+
+    <section class="panel settings-panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Profile</div>
+          <h2>Account settings</h2>
+          <p>Keep your identity and private-key fields in a separate screen, not inside the dashboard.</p>
+        </div>
+      </div>
+      <div class="settings-body" id="settingsBody"></div>
+    </section>
   </div>
 
   <div class="popout-shell" id="popoutShell" hidden>
@@ -1127,7 +1584,6 @@
     </section>
   </div>
 
-  <script src="private/provider.js"></script>
   <script>
     const DEFAULT_STOCK_VIEW = ["SPGI", "SPFF", "BCBC", "BTM"];
     const STORAGE_PREFIX = "MeridianMarkets";
@@ -1135,6 +1591,7 @@
     const STOCK_VIEW_KEY = `${STORAGE_PREFIX}.stockview`;
     const WATCHLIST_KEY = `${STORAGE_PREFIX}.watchlist`;
     const SIDEBAR_KEY = `${STORAGE_PREFIX}.sidebar-collapsed`;
+    const PROFILE_KEY = `${STORAGE_PREFIX}.profile`;
     const LEGACY_STOCK_VIEW_KEY = `${LEGACY_STORAGE_PREFIX}.stockview`;
     const LEGACY_WATCHLIST_KEY = `${LEGACY_STORAGE_PREFIX}.watchlist`;
     const LEGACY_SIDEBAR_KEY = `${LEGACY_STORAGE_PREFIX}.sidebar-collapsed`;
@@ -1142,6 +1599,7 @@
     const popoutTarget = (urlParams.get("popout") || "").trim().toLowerCase();
     const isPopoutMode = Boolean(popoutTarget);
     const isOverviewPopout = popoutTarget === "overview";
+    const isSettingsMode = (urlParams.get("settings") || urlParams.get("page") || "").trim().toLowerCase() === "settings";
     const RANGE_OPTIONS = [
       ["1d", "1d"],
       ["5d", "5d"],
@@ -1178,19 +1636,398 @@
       "cardsGrid", "watchlistList", "stockSearch", "stockSearchBtn", "searchResults", "searchStatus",
       "marketSignalBadge", "marketSignalBias", "marketSignalReason", "marketSignalList", "marketSignalRisk",
       "statusText", "errorBanner", "sidebarToggleBtn", "pageTitle", "overviewPopoutBtn", "topbarSubtitle",
-      "moduleView", "moduleViewTitle", "moduleViewCopy",
+      "buildBadge",
+      "authShell", "authBody", "authTitle", "authSubtitle", "authStatusText",
+      "settingsShell", "settingsBackBtn", "settingsBody", "settingsTitle", "settingsSubtitle", "settingsStatusText",
+      "moduleView", "moduleViewTitle", "moduleViewCopy", "moduleViewExtras",
       "appShell", "popoutShell", "popoutCardsGrid", "popoutCloseBtn", "popoutSymbolTitle", "popoutStatusText", "popoutErrorBox", "popoutPageTitle", "popoutMeta"
     ].map(id => [id, document.getElementById(id)]));
     const appShell = document.getElementById("appShell");
     const mainColumn = document.querySelector(".main-column");
     const sidebarTabs = [...document.querySelectorAll("[data-sidebar-tab]")];
+    const logoutButton = document.querySelector("[data-logout-button]");
+    logoutButton?.addEventListener("click", event => {
+      event.preventDefault();
+      requestLogout();
+    });
     let sidebarCollapsed = true;
     let dashboardReady = false;
     let activeSidebarTab = null;
+    let buildBranchLabel = "";
+    let runtimeMeta = null;
     const privateProvider = window.MERIDIAN_PRIVATE_PROVIDER || null;
+    const AUTH_EMAIL_KEY = `${STORAGE_PREFIX}.auth-email`;
+    const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    let profileState = loadProfileState();
+    let profilePrivateKeyVisible = false;
+    let firebaseAuthPromise = null;
+    let firebaseAuth = null;
+    let firebaseCurrentUser = null;
+    let firebaseAuthReady = false;
+    let dashboardInitializationPromise = null;
+    let dashboardStarted = false;
 
     function privateProviderIsConnected() {
       return Boolean(privateProvider && (privateProvider.connected || privateProvider.authorized));
+    }
+
+    function stopTimer() {
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
+
+    function authDisplayLabel(user = firebaseCurrentUser) {
+      return String(user?.displayName || user?.email || "Firebase user").trim() || "Firebase user";
+    }
+
+    function authInitials(user = firebaseCurrentUser) {
+      const name = String(user?.displayName || "").trim();
+      if (name) {
+        const parts = name.split(/\s+/).filter(Boolean);
+        const first = parts[0]?.charAt(0) || "";
+        const last = parts[parts.length - 1]?.charAt(0) || "";
+        return `${first}${last}`.trim().toUpperCase() || first.toUpperCase() || last.toUpperCase();
+      }
+      const email = String(user?.email || "").trim();
+      if (email) return email.charAt(0).toUpperCase();
+      return "MM";
+    }
+
+    function readStoredAuthEmail() {
+      try {
+        return localStorage.getItem(AUTH_EMAIL_KEY) || profileState.email || "";
+      } catch {
+        return profileState.email || "";
+      }
+    }
+
+    function saveStoredAuthEmail(email) {
+      try {
+        if (email) localStorage.setItem(AUTH_EMAIL_KEY, email);
+        else localStorage.removeItem(AUTH_EMAIL_KEY);
+      } catch {
+        // ignore storage failures
+      }
+    }
+
+    function hideAllPrimaryShells() {
+      if (els.appShell) els.appShell.hidden = true;
+      if (els.settingsShell) els.settingsShell.hidden = true;
+      if (els.popoutShell) els.popoutShell.hidden = true;
+    }
+
+    function setAuthStatus(text) {
+      if (els.authStatusText) els.authStatusText.textContent = text;
+    }
+
+    function formatAuthError(err) {
+      const code = String(err?.code || "").trim();
+      const message = String(err?.message || err || "").trim();
+      if (code === "auth/configuration-not-found") {
+        return "Firebase Google sign-in is not fully configured yet. In Firebase Console → Authentication → Sign-in method, enable Google and make sure the app's authorized domains include localhost / 127.0.0.1.";
+      }
+      if (code === "auth/unauthorized-domain") {
+        return "This app origin is not authorized in Firebase. Add localhost and 127.0.0.1 in Firebase Console → Authentication → Settings → Authorized domains.";
+      }
+      if (code === "auth/popup-blocked") {
+        return "The browser blocked the Google sign-in popup. Allow popups for this app and try again.";
+      }
+      if (code === "auth/popup-closed-by-user") {
+        return "Google sign-in was closed before it completed.";
+      }
+      if (code === "auth/operation-not-allowed") {
+        return "This sign-in method is disabled in Firebase. Enable Google sign-in in Firebase Console → Authentication → Sign-in method.";
+      }
+      return message;
+    }
+
+    function renderAuthMarkup(message) {
+      const emailValue = escapeHtml(readStoredAuthEmail());
+      if (firebaseCurrentUser) {
+        const userLine = escapeHtml(authDisplayLabel());
+        const emailLine = escapeHtml(firebaseCurrentUser.email || "");
+        return `
+          <div class="auth-status-card">
+            <div class="k">Signed in</div>
+            <div class="v">${userLine}</div>
+            <div class="auth-help">${emailLine ? `Firebase account: ${emailLine}` : "Firebase Authentication is connected and the dashboard can load securely."}</div>
+            <div class="auth-actions">
+              <button class="btn primary" id="authContinueBtn" type="button">Continue to dashboard</button>
+              <button class="btn" id="authSignOutBtn" type="button">Sign out</button>
+            </div>
+          </div>`;
+      }
+      return `
+        <div class="auth-card">
+          <div class="auth-grid">
+            <label class="auth-field">
+              <span>Email</span>
+              <input id="authEmail" type="email" autocomplete="email" value="${emailValue}" placeholder="name@example.com" />
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <input id="authPassword" type="password" autocomplete="current-password" placeholder="Enter your password" />
+            </label>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" id="authSignInBtn" type="button">Sign in</button>
+            <button class="btn" id="authCreateBtn" type="button">Create account</button>
+            <button class="btn" id="authGoogleBtn" type="button">Continue with Google</button>
+          </div>
+          <div class="auth-help">Passwords are handled by Firebase Authentication and are never stored locally in Meridian Markets.</div>
+          <div class="auth-inline-error" id="authMessage">${escapeHtml(message || "")}</div>
+        </div>
+        <div class="auth-status-card">
+          <div class="k">What this protects</div>
+          <div class="v">Login access</div>
+          <div class="auth-help">Email/password and Google sign-in are both enabled. Your dashboard preferences stay local, but credentials stay in Firebase.</div>
+        </div>`;
+    }
+
+    function showAuthShell(message) {
+      hideAllPrimaryShells();
+      if (els.authShell) {
+        els.authShell.hidden = false;
+        if (els.authTitle) els.authTitle.textContent = "Sign in";
+        if (els.authSubtitle) els.authSubtitle.textContent = "Use Firebase Authentication to unlock Meridian Markets.";
+        if (els.authBody) {
+          els.authBody.innerHTML = renderAuthMarkup(message);
+          bindAuthModule();
+        }
+      }
+      setAuthStatus(message || "Ready");
+      document.title = "Meridian Markets — Sign in";
+    }
+
+    function showSignedInShell() {
+      if (els.authShell) els.authShell.hidden = true;
+      if (els.appShell) els.appShell.hidden = false;
+      if (els.settingsShell && isSettingsMode) els.settingsShell.hidden = false;
+      if (els.authTitle) els.authTitle.textContent = "Sign in";
+      if (els.authSubtitle) els.authSubtitle.textContent = "Use Firebase Authentication to unlock Meridian Markets.";
+      setAuthStatus(firebaseCurrentUser ? `Signed in as ${authDisplayLabel()}` : "Ready");
+    }
+
+    async function requestLogout() {
+      const confirmed = window.confirm("Log out of Meridian Markets and return to the login page?");
+      if (!confirmed) return false;
+      try {
+        await initFirebaseAuth();
+        if (firebaseAuth) {
+          const { signOut } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+          await signOut(firebaseAuth);
+        }
+        window.location.reload();
+        return true;
+      } catch (err) {
+        showAuthShell(formatAuthError(err) || "Could not log out.");
+        return false;
+      }
+    }
+
+    function bindAuthModule() {
+      const emailInput = document.getElementById("authEmail");
+      const passwordInput = document.getElementById("authPassword");
+      const messageBox = document.getElementById("authMessage");
+      const signInBtn = document.getElementById("authSignInBtn");
+      const createBtn = document.getElementById("authCreateBtn");
+      const googleBtn = document.getElementById("authGoogleBtn");
+      const signOutBtn = document.getElementById("authSignOutBtn");
+      const continueBtn = document.getElementById("authContinueBtn");
+
+      const setMessage = (message, isError = false) => {
+        if (!messageBox) return;
+        messageBox.textContent = message || "";
+        messageBox.classList.toggle("auth-inline-error", Boolean(isError));
+      };
+
+      const email = () => (emailInput?.value || "").trim();
+      const password = () => passwordInput?.value || "";
+
+      const withAuth = async callback => {
+        await initFirebaseAuth();
+        return callback();
+      };
+
+      signInBtn?.addEventListener("click", async () => {
+        const userEmail = email();
+        const userPassword = password();
+        if (!userEmail || !userPassword) {
+          setMessage("Enter your email and password.", true);
+          return;
+        }
+        setMessage("Signing in…");
+        try {
+          await withAuth(async () => {
+            const { signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+            await signInWithEmailAndPassword(firebaseAuth, userEmail, userPassword);
+          });
+          saveStoredAuthEmail(userEmail);
+        } catch (err) {
+          setMessage(formatAuthError(err), true);
+        }
+      });
+
+      createBtn?.addEventListener("click", async () => {
+        const userEmail = email();
+        const userPassword = password();
+        if (!userEmail || !userPassword) {
+          setMessage("Enter an email and password to create an account.", true);
+          return;
+        }
+        if (userPassword.length < 6) {
+          setMessage("Password must be at least 6 characters.", true);
+          return;
+        }
+        setMessage("Creating account…");
+        try {
+          await withAuth(async () => {
+            const { createUserWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+            await createUserWithEmailAndPassword(firebaseAuth, userEmail, userPassword);
+          });
+          saveStoredAuthEmail(userEmail);
+        } catch (err) {
+          setMessage(formatAuthError(err), true);
+        }
+      });
+
+      googleBtn?.addEventListener("click", async () => {
+        setMessage("Opening Google sign-in…");
+        try {
+          await withAuth(async () => {
+            const { GoogleAuthProvider, signInWithRedirect } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+            const provider = new GoogleAuthProvider();
+            await signInWithRedirect(firebaseAuth, provider);
+          });
+        } catch (err) {
+          setMessage(formatAuthError(err), true);
+        }
+      });
+
+      signOutBtn?.addEventListener("click", async () => {
+        try {
+          await withAuth(async () => {
+            const { signOut } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+            await signOut(firebaseAuth);
+          });
+        } catch (err) {
+          setMessage(formatAuthError(err), true);
+        }
+      });
+
+      continueBtn?.addEventListener("click", async () => {
+        setMessage("Loading dashboard…");
+        try {
+          if (!dashboardStarted) {
+            await initializeDashboard();
+          }
+          if (isSettingsMode) showSettingsPage();
+          else showDashboardHome();
+        } catch (err) {
+          setMessage(formatAuthError(err) || "Could not open the dashboard.", true);
+        }
+      });
+
+      emailInput?.addEventListener("input", () => saveStoredAuthEmail(email()));
+      passwordInput?.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          signInBtn?.click();
+        }
+      });
+    }
+
+    function getFirebaseConfig() {
+      const metaConfig = runtimeMeta?.firebase_config && typeof runtimeMeta.firebase_config === "object"
+        ? runtimeMeta.firebase_config
+        : null;
+      const fallbackConfig = window.MERIDIAN_FIREBASE_CONFIG && typeof window.MERIDIAN_FIREBASE_CONFIG === "object"
+        ? window.MERIDIAN_FIREBASE_CONFIG
+        : null;
+      const config = metaConfig || fallbackConfig;
+      return config && config.apiKey ? config : null;
+    }
+
+    async function initFirebaseAuth() {
+      if (firebaseAuthPromise) return firebaseAuthPromise;
+      firebaseAuthPromise = (async () => {
+        const firebaseConfig = getFirebaseConfig();
+        if (!firebaseConfig) {
+          throw new Error("Firebase config is missing. Set it in the local config.json or inject window.MERIDIAN_FIREBASE_CONFIG before startup.");
+        }
+        const [{ initializeApp }, authMod] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js"),
+        ]);
+        const { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged } = authMod;
+        const app = initializeApp(firebaseConfig);
+        firebaseAuth = getAuth(app);
+        await setPersistence(firebaseAuth, browserLocalPersistence);
+        await new Promise((resolve, reject) => {
+          let firstEvent = true;
+          onAuthStateChanged(firebaseAuth, async user => {
+            firebaseCurrentUser = user || null;
+            firebaseAuthReady = true;
+            try {
+              if (user?.email) saveStoredAuthEmail(user.email);
+            } catch {
+              // ignore storage failures
+            }
+            if (user) {
+              setAuthStatus(`Signed in as ${authDisplayLabel(user)}`);
+              if (!dashboardStarted && !isPopoutMode) {
+                await initializeDashboard();
+              }
+              if (dashboardStarted) {
+                showSignedInShell();
+                if (isSettingsMode) showSettingsPage();
+                else showDashboardHome();
+                refresh().catch(() => {});
+                startTimer();
+              }
+            } else {
+              stopTimer();
+              dashboardStarted = false;
+              dashboardInitializationPromise = null;
+              showAuthShell("Sign in with Email/Password or Google to continue.");
+            }
+            if (firstEvent) {
+              firstEvent = false;
+              resolve();
+            }
+          }, reject);
+        });
+        return firebaseAuth;
+      })();
+      return firebaseAuthPromise;
+    }
+
+    function applyBuildBadge(meta) {
+      const branch = String(meta?.branch || "").trim();
+      const buildId = String(meta?.build_id || "").trim();
+      buildBranchLabel = branch;
+      if (!els.buildBadge) return;
+      if (!branch) {
+        els.buildBadge.hidden = true;
+        els.buildBadge.textContent = "";
+        return;
+      }
+      els.buildBadge.hidden = false;
+      els.buildBadge.textContent = buildId ? `${branch} build` : branch;
+      els.buildBadge.title = buildId ? `Build ${buildId}` : branch;
+    }
+
+    async function loadBuildMeta() {
+      try {
+        const res = await fetch("/api/meta", { cache: "no-store" });
+        if (!res.ok) return;
+        const meta = await res.json();
+        runtimeMeta = meta && typeof meta === "object" ? meta : null;
+        applyBuildBadge(meta);
+      } catch {
+        runtimeMeta = null;
+        applyBuildBadge(null);
+      }
     }
 
     function applySidebarState() {
@@ -1205,6 +2042,32 @@
         // ignore storage failures
       }
       persistDashboardState();
+    }
+
+    function showSettingsPage() {
+      if (els.appShell) els.appShell.hidden = true;
+      if (els.popoutShell) els.popoutShell.hidden = true;
+      if (els.settingsShell) els.settingsShell.hidden = false;
+      if (els.settingsBody) {
+        els.settingsBody.innerHTML = renderSettingsAccountMarkup();
+        bindSettingsAccountModule();
+      }
+      if (els.settingsTitle) els.settingsTitle.textContent = "Settings";
+      if (els.settingsSubtitle) els.settingsSubtitle.textContent = "Account details stay separate from the dashboard.";
+      if (els.settingsStatusText) els.settingsStatusText.textContent = "Ready";
+      document.title = "Settings";
+    }
+
+    function hideSettingsPage() {
+      if (els.settingsShell) els.settingsShell.hidden = true;
+      if (els.appShell) els.appShell.hidden = false;
+    }
+
+    function openSettingsPage() {
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set("settings", "1");
+      window.history.replaceState({}, "", nextUrl);
+      showSettingsPage();
     }
 
     function readStoredJson(primaryKey, legacyKey) {
@@ -1233,21 +2096,311 @@
       els.topbarSubtitle.hidden = !visible || !text;
     }
 
-    function moduleCopyFor(label) {
-      if (label === "Trading") {
-        return privateProviderIsConnected()
-          ? "A private trading connector is connected. This module can now surface authorized account, wallet, and order flows."
-          : "This tab is reserved for a private trading connector. The public build keeps it available but inactive until an authorized provider is supplied.";
+    function moduleMetric(label, value) {
+      return `<div class="module-stat"><div class="k">${escapeHtml(label)}</div><div class="v">${escapeHtml(value)}</div></div>`;
+    }
+
+    function moduleChip(value) {
+      return `<span class="module-chip">${escapeHtml(value)}</span>`;
+    }
+
+    function moduleAction(label, action, primary = false) {
+      return `<button type="button" class="btn${primary ? " primary" : ""}" data-module-action="${escapeHtml(action)}">${escapeHtml(label)}</button>`;
+    }
+
+    function moduleSymbolChips(symbols, emptyLabel) {
+      const list = symbols.slice(0, 8);
+      if (!list.length) return `<div class="module-note">${escapeHtml(emptyLabel)}</div>`;
+      return `<div class="module-chip-row">${list.map(sym => moduleChip(`${sym} • ${symbolName(sym)}`)).join("")}</div>`;
+    }
+
+    function defaultProfileState() {
+      return {
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        timezone: "",
+        currency: "",
+        privateKey: "",
+      };
+    }
+
+    function loadProfileState() {
+      try {
+        const raw = readStoredJson(PROFILE_KEY);
+        if (!raw) return defaultProfileState();
+        const parsed = JSON.parse(raw);
+        const defaults = defaultProfileState();
+        return {
+          firstName: String(parsed?.firstName ?? defaults.firstName).trim(),
+          lastName: String(parsed?.lastName ?? defaults.lastName).trim(),
+          username: String(parsed?.username ?? defaults.username).trim(),
+          email: String(parsed?.email ?? defaults.email).trim(),
+          timezone: String(parsed?.timezone ?? defaults.timezone).trim() || defaults.timezone,
+          currency: String(parsed?.currency ?? defaults.currency).trim().toUpperCase() || defaults.currency,
+          privateKey: String(parsed?.privateKey ?? defaults.privateKey),
+        };
+      } catch {
+        return defaultProfileState();
       }
-      if (label === "Wallet") {
-        return privateProviderIsConnected()
-          ? "A private wallet connector is connected. This module can now surface authorized balances and wallet actions."
-          : "This tab is reserved for a private wallet connector. The public build keeps it available but inactive until an authorized provider is supplied.";
+    }
+
+    function saveProfileState() {
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify({
+          firstName: profileState.firstName,
+          lastName: profileState.lastName,
+          username: profileState.username,
+          email: profileState.email,
+          timezone: profileState.timezone,
+          currency: profileState.currency,
+        }));
+      } catch {
+        // ignore storage failures
       }
-      return `This ${label.toLowerCase()} page is coming soon.`;
+    }
+
+    function profileDisplayName() {
+      const full = [profileState.firstName, profileState.lastName].map(part => String(part || "").trim()).filter(Boolean).join(" ");
+      return full || profileState.username || profileState.email || "";
+    }
+
+    function profileDisplaySubtitle() {
+      const parts = [];
+      if (profileState.username) parts.push(`@${profileState.username}`);
+      if (profileState.email) parts.push(profileState.email);
+      return parts.join(" • ") || "";
+    }
+
+    function profileInitials() {
+      const first = String(profileState.firstName || "").trim().charAt(0);
+      const last = String(profileState.lastName || "").trim().charAt(0);
+      if (first || last) return `${first}${last}`.trim().toUpperCase() || first.toUpperCase() || last.toUpperCase();
+      const username = String(profileState.username || "").trim().replace(/[^a-z0-9]/gi, "");
+      if (username) return username.slice(0, 2).toUpperCase();
+      const email = String(profileState.email || "").trim();
+      if (email) return email.charAt(0).toUpperCase();
+      return "";
+    }
+
+    function profileTimezoneOptions() {
+      const supported = (() => {
+        try {
+          if (typeof Intl !== "undefined" && typeof Intl.supportedValuesOf === "function") {
+            return Intl.supportedValuesOf("timeZone");
+          }
+        } catch {
+          // fall back below
+        }
+        return [
+          defaultTimezone,
+          "UTC",
+          "America/New_York",
+          "America/Chicago",
+          "America/Denver",
+          "America/Los_Angeles",
+          "Europe/London",
+          "Europe/Paris",
+          "Asia/Tokyo",
+          "Australia/Sydney",
+        ];
+      })();
+      const list = [...new Set(supported.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      if (profileState.timezone && !list.includes(profileState.timezone)) list.unshift(profileState.timezone);
+      return ['<option value="">Select timezone</option>', ...list.map(zone => `<option value="${escapeHtml(zone)}">${escapeHtml(zone)}</option>`)].join("");
+    }
+
+    function profileCurrencyOptions() {
+      const supported = (() => {
+        try {
+          if (typeof Intl !== "undefined" && typeof Intl.supportedValuesOf === "function") {
+            return Intl.supportedValuesOf("currency");
+          }
+        } catch {
+          // fall back below
+        }
+        return ["USD", "EUR", "GBP", "CAD", "AUD", "JPY"];
+      })();
+      const list = [...new Set(supported.filter(Boolean).map(code => String(code).toUpperCase()))].sort((a, b) => a.localeCompare(b));
+      if (profileState.currency && !list.includes(profileState.currency)) list.unshift(profileState.currency);
+      return ['<option value="">Select currency</option>', ...list.map(code => `<option value="${escapeHtml(code)}">${escapeHtml(code)}</option>`)].join("");
+    }
+
+    function renderSettingsAccountMarkup() {
+      const authLine = firebaseCurrentUser
+        ? `Signed in with Firebase as ${escapeHtml(authDisplayLabel())}. Credentials stay in Firebase Authentication, not local storage.`
+        : `You are not signed in yet. Use the login screen to unlock the dashboard.`;
+      const signOutButton = firebaseCurrentUser
+        ? `<button class="btn" id="settingsSignOutBtn" type="button">Sign out of Firebase</button>`
+        : `<button class="btn primary" id="settingsGoToAuthBtn" type="button">Go to sign in</button>`;
+      return `
+        <div class="profile-shell">
+          <div class="profile-summary">
+            <div class="k">Account settings</div>
+            <div class="v">Keep these essentials in one place: email, timezone, preferred currency, and private key.</div>
+          </div>
+          <div class="auth-status-card">
+            <div class="k">Authentication</div>
+            <div class="v">${authLine}</div>
+            <div class="auth-actions">${signOutButton}</div>
+          </div>
+
+          <div class="profile-form">
+            <div class="profile-grid">
+              <label class="profile-field">
+                <span>Email</span>
+                <input id="profileEmail" type="email" autocomplete="email" value="${escapeHtml(profileState.email)}" placeholder="name@example.com" />
+              </label>
+              <label class="profile-field">
+                <span>Timezone</span>
+                <select id="profileTimezone">${profileTimezoneOptions()}</select>
+              </label>
+              <label class="profile-field">
+                <span>Preferred currency</span>
+                <select id="profileCurrency">${profileCurrencyOptions()}</select>
+              </label>
+              <label class="profile-field">
+                <span>Private key</span>
+                <div class="profile-secret-row">
+                  <input id="profilePrivateKey" type="password" value="${escapeHtml(profileState.privateKey)}" placeholder="Paste private key to validate" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off" />
+                  <button id="profilePrivateKeyToggle" class="btn icon-btn profile-secret-toggle" type="button" aria-label="Show private key" title="Show private key">👁</button>
+                </div>
+                <div class="profile-help">Hidden by default. Reveal only when you need to review or validate the value.</div>
+              </label>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function bindSettingsAccountModule() {
+      const emailInput = document.getElementById("profileEmail");
+      const timezoneInput = document.getElementById("profileTimezone");
+      const currencyInput = document.getElementById("profileCurrency");
+      const privateKeyInput = document.getElementById("profilePrivateKey");
+      const privateKeyToggle = document.getElementById("profilePrivateKeyToggle");
+
+      const updateSettingsState = () => {
+        profileState.email = emailInput?.value.trim() || "";
+        profileState.timezone = timezoneInput?.value || "";
+        profileState.currency = (currencyInput?.value || "").trim().toUpperCase();
+        if (privateKeyInput) profileState.privateKey = privateKeyInput.value;
+        saveProfileState();
+      };
+
+      const setPrivateKeyVisibility = visible => {
+        profilePrivateKeyVisible = visible;
+        if (!privateKeyInput || !privateKeyToggle) return;
+        privateKeyInput.type = visible ? "text" : "password";
+        privateKeyToggle.textContent = visible ? "🙈" : "👁";
+        privateKeyToggle.setAttribute("aria-label", visible ? "Hide private key" : "Show private key");
+        privateKeyToggle.title = visible ? "Hide private key" : "Show private key";
+      };
+
+      emailInput?.addEventListener("input", updateSettingsState);
+      timezoneInput?.addEventListener("change", updateSettingsState);
+      currencyInput?.addEventListener("change", updateSettingsState);
+      privateKeyInput?.addEventListener("input", updateSettingsState);
+      privateKeyToggle?.addEventListener("click", () => setPrivateKeyVisibility(!profilePrivateKeyVisible));
+      document.getElementById("settingsSignOutBtn")?.addEventListener("click", async () => {
+        try {
+          if (!firebaseAuth) return;
+          const { signOut } = await import("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
+          await signOut(firebaseAuth);
+        } catch (err) {
+          if (els.settingsStatusText) els.settingsStatusText.textContent = err?.message || String(err);
+        }
+      });
+      document.getElementById("settingsGoToAuthBtn")?.addEventListener("click", () => showAuthShell("Sign in to continue."));
+
+      setPrivateKeyVisibility(profilePrivateKeyVisible);
+    }
+
+    function renderModulePage(label) {
+      if (!els.moduleViewTitle || !els.moduleViewCopy || !els.moduleViewExtras) return;
+      const stockCount = stockViewSymbols.length;
+      const watchCount = watchlistSymbols.length;
+      const providerReady = Boolean(privateProvider && (privateProvider.connected || privateProvider.authorized));
+      const branchLabel = buildBranchLabel || "local build";
+      const signalBiasText = els.signalBias?.textContent || "—";
+      const signalRiskText = els.signalRisk?.textContent || "—";
+      const signalReasonText = els.signalReason?.textContent || "—";
+      let title = label;
+      let copy = "";
+      let extras = "";
+
+      switch (label) {
+        case "Market":
+          title = "Market";
+          copy = "A fast summary of the current tracked market setup and signal context.";
+          extras = `
+            <div class="module-grid">
+              ${moduleMetric("Selected range", selectedRange.toUpperCase())}
+              ${moduleMetric("Signal bias", signalBiasText)}
+              ${moduleMetric("Risk", signalRiskText)}
+              ${moduleMetric("Reason", signalReasonText)}
+            </div>
+            <div>
+              <div class="panel-title" style="margin-bottom:8px;">Tracked symbols</div>
+              ${moduleSymbolChips(stockViewSymbols, "No symbols are in the main market view yet.")}
+            </div>
+            <div>
+              <div class="panel-title" style="margin-bottom:8px;">Watchlist</div>
+              ${moduleSymbolChips(watchlistSymbols, "Your watchlist is empty right now.")}
+            </div>
+            <div class="module-actions">
+              ${moduleAction("Open market overview", "overview", true)}
+              ${moduleAction("Refresh data", "refresh")}
+              ${moduleAction("Back to dashboard", "dashboard")}
+            </div>`;
+          break;
+        case "Trading":
+          title = "Trading";
+          copy = providerReady ? "A private trading connector is attached." : "Trading is reserved for the private connector and stays inactive for now.";
+          extras = `
+            <div class="module-note">We are holding off on the secure trading implementation. This page is ready to accept the private provider later, but it is intentionally disconnected today.</div>
+            <div class="module-grid">
+              ${moduleMetric("Status", providerReady ? "Connected" : "Disconnected")}
+              ${moduleMetric("Auth", providerReady ? "Authorized" : "Waiting")}
+              ${moduleMetric("Orders", providerReady ? "Enabled" : "Disabled")}
+              ${moduleMetric("Wallet", providerReady ? "Available" : "Reserved")}
+            </div>
+            <div class="module-actions">
+              ${moduleAction("Back to dashboard", "dashboard", true)}
+            </div>`;
+          break;
+        case "Wallet":
+          title = "Wallet";
+          copy = providerReady ? "Private wallet data is attached." : "Wallet access stays reserved until the private service is integrated.";
+          extras = `
+            <div class="module-note">No wallet or custody logic is exposed in the public app yet. This keeps the open-source build safe and simple.</div>
+            <div class="module-grid">
+              ${moduleMetric("Balance", providerReady ? "Available" : "Hidden")}
+              ${moduleMetric("Transactions", providerReady ? "Available" : "Reserved")}
+              ${moduleMetric("Security", "Private backend only")}
+              ${moduleMetric("Public build", "Safe fallback")}
+            </div>
+            <div class="module-actions">
+              ${moduleAction("Back to dashboard", "dashboard", true)}
+            </div>`;
+          break;
+        default:
+          copy = `This ${label.toLowerCase()} area is ready for the next pass.`;
+          extras = `
+            <div class="module-note">We can keep extending the sidebar from here without disturbing the core dashboard.</div>
+            <div class="module-actions">${moduleAction("Back to dashboard", "dashboard", true)}</div>`;
+          break;
+      }
+
+      els.moduleViewTitle.textContent = title;
+      els.moduleViewCopy.textContent = copy;
+      els.moduleViewExtras.innerHTML = extras;
     }
 
     function showModulePage(label) {
+      hideSettingsPage();
+      if (els.authShell) els.authShell.hidden = true;
+      if (els.appShell) els.appShell.hidden = false;
       activeSidebarTab = label;
       sidebarTabs.forEach(btn => {
         const isActive = btn.dataset.sidebarTab === label;
@@ -1256,12 +2409,7 @@
       });
       setTopbarTitle(label);
       setTopbarSubtitle("", false);
-      if (els.moduleViewTitle) {
-        els.moduleViewTitle.textContent = `${label} Page Coming Soon`;
-      }
-      if (els.moduleViewCopy) {
-        els.moduleViewCopy.textContent = moduleCopyFor(label);
-      }
+      renderModulePage(label);
       if (els.moduleView) {
         els.moduleView.hidden = false;
       }
@@ -1271,6 +2419,13 @@
     }
 
     function showDashboardHome() {
+      hideSettingsPage();
+      if (els.authShell) els.authShell.hidden = true;
+      if (els.appShell) els.appShell.hidden = false;
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.delete("settings");
+      if (!nextUrl.searchParams.size) nextUrl.search = "";
+      window.history.replaceState({}, "", nextUrl);
       activeSidebarTab = "Dashboard";
       sidebarTabs.forEach(btn => {
         const isPrimary = btn.dataset.sidebarTab === "Dashboard";
@@ -1278,13 +2433,29 @@
         btn.setAttribute("aria-current", isPrimary ? "page" : "false");
       });
       setTopbarTitle("Meridian Markets");
-      setTopbarSubtitle("Yahoo Finance-backed quotes, selectable time frames, mini-trends, and auto-refresh every 30 seconds", true);
+      const baseSubtitle = "Yahoo Finance-backed quotes, selectable time frames, mini-trends, and auto-refresh every 30 seconds";
+      setTopbarSubtitle(buildBranchLabel ? `${baseSubtitle} • ${buildBranchLabel} build` : baseSubtitle, true);
+      if (els.statusText && dashboardReady) els.statusText.textContent = "Loading quotes…";
       if (els.moduleView) {
         els.moduleView.hidden = true;
       }
       if (mainColumn) {
         mainColumn.hidden = false;
       }
+      if (dashboardReady && !isPopoutMode) {
+        queueMicrotask(() => refresh().catch(() => {}));
+      }
+    }
+
+    function resetLocalWorkspace() {
+      stockViewSymbols = [...DEFAULT_STOCK_VIEW];
+      watchlistSymbols = [];
+      renderStockView();
+      renderWatchlist();
+      refresh();
+      persistDashboardState();
+      setSearchStatus("Local workspace reset.");
+      showDashboardHome();
     }
 
     function openMarketOverviewPopout() {
@@ -1400,7 +2571,7 @@
       }
     }
 
-    function saveWatchlist() {
+    async function saveWatchlist() {
       try {
         localStorage.setItem(WATCHLIST_KEY, JSON.stringify({
           symbols: watchlistSymbols,
@@ -1412,7 +2583,7 @@
       } catch {
         if (els.searchStatus) els.searchStatus.textContent = "Could not save watchlist in this browser.";
       }
-      persistDashboardState();
+      await persistDashboardState();
     }
 
     function setSearchStatus(text) {
@@ -1448,7 +2619,7 @@
       };
     }
 
-    function persistDashboardState() {
+    async function persistDashboardState() {
       if (!dashboardReady) return;
       const payload = {
         stockview: {
@@ -1469,17 +2640,12 @@
         // ignore local storage failures
       }
       try {
-        const body = JSON.stringify(payload);
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon('/api/state', new Blob([body], { type: 'application/json' }));
-        } else {
-          fetch('/api/state', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body,
-            keepalive: true,
-          }).catch(() => {});
-        }
+        await fetch('/api/state', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        });
       } catch {
         // ignore persistence failures
       }
@@ -1503,7 +2669,7 @@
       }
     }
 
-    function saveStockView() {
+    async function saveStockView() {
       try {
         localStorage.setItem(STOCK_VIEW_KEY, JSON.stringify({
           symbols: stockViewSymbols,
@@ -1512,7 +2678,7 @@
       } catch {
         // ignore
       }
-      persistDashboardState();
+      await persistDashboardState();
     }
 
     function renderStockView() {
@@ -1563,6 +2729,12 @@
           <div class="kv"><div class="k">Last update</div><div class="v" id="update-${symbol}">—</div></div>
         </div>
       `;
+      const removeBtn = article.querySelector("[data-remove-stock-symbol]");
+      removeBtn?.addEventListener("click", async event => {
+        event.preventDefault();
+        event.stopPropagation();
+        await removeFromStockView(symbol);
+      });
       els.cardsGrid.appendChild(article);
       colorForSymbol(symbol);
     }
@@ -1586,12 +2758,12 @@
       return true;
     }
 
-    function removeFromStockView(symbol) {
+    async function removeFromStockView(symbol) {
       const sym = normalizeSymbol(symbol);
       if (!sym || !stockViewSymbols.includes(sym)) return false;
       stockViewSymbols = stockViewSymbols.filter(s => s !== sym);
       document.getElementById(`card-${sym}`)?.remove();
-      saveStockView();
+      await saveStockView();
       renderStockView();
       refresh();
       setSearchStatus(`Removed ${sym} from the stock view.`);
@@ -1625,6 +2797,11 @@
           <div class="p" id="watchPrice-${symbol}">—</div>
           <button type="button" class="remove-stock" data-remove-watch-symbol="${escapeHtml(symbol)}">Remove</button>
         `;
+        row.querySelector("[data-remove-watch-symbol]")?.addEventListener("click", async event => {
+          event.preventDefault();
+          event.stopPropagation();
+          await removeFromWatchlist(symbol);
+        });
         els.watchlistList.appendChild(row);
       }
     }
@@ -1648,12 +2825,12 @@
       return true;
     }
 
-    function removeFromWatchlist(symbol) {
+    async function removeFromWatchlist(symbol) {
       const sym = normalizeSymbol(symbol);
       if (!sym || !watchlistSymbols.includes(sym)) return false;
       watchlistSymbols = watchlistSymbols.filter(s => s !== sym);
       document.getElementById(`watch-row-${sym}`)?.remove();
-      saveWatchlist();
+      await saveWatchlist();
       renderWatchlist();
       refresh();
       setSearchStatus(`Removed ${sym} from the watchlist.`);
@@ -2015,6 +3192,25 @@
       drawSparkline(symbol);
     }
 
+    function markCardUnavailable(symbol, reason) {
+      const message = reason || "No live data returned";
+      setText(`price-${symbol}`, "—");
+      setText(`change-${symbol}`, message);
+      setText(`open-${symbol}`, "—");
+      setText(`hl-${symbol}`, "—");
+      setText(`vol-${symbol}`, "—");
+      setText(`update-${symbol}`, message);
+      setText(`stamp-${symbol}`, message);
+      const watchPriceEl = document.getElementById(`watchPrice-${symbol}`);
+      if (watchPriceEl) watchPriceEl.textContent = "—";
+      const watchChangeEl = document.getElementById(`watch-${symbol}`);
+      if (watchChangeEl) watchChangeEl.textContent = message;
+      const changeEl = document.getElementById(`change-${symbol}`);
+      if (changeEl) changeEl.className = "change";
+      const tooltip = document.getElementById(`tooltip-${symbol}`);
+      if (tooltip) tooltip.style.display = "none";
+    }
+
     async function refresh() {
       if (els.statusText) els.statusText.textContent = `Refreshing ${selectedRange}…`;
       if (isPopoutMode) setPopoutMessage(`Refreshing ${selectedRange}…`);
@@ -2043,6 +3239,17 @@
         }
 
         const errors = data.errors || {};
+        const seen = new Set(data.quotes.map(x => x.symbol));
+        for (const sym of stockViewSymbols) {
+          if (!seen.has(sym)) {
+            markCardUnavailable(sym, errors[sym] || "No live data returned");
+          }
+        }
+        for (const sym of watchlistSymbols) {
+          if (!seen.has(sym)) {
+            markCardUnavailable(sym, errors[sym] || "No live data returned");
+          }
+        }
         if (Object.keys(errors).length) {
           showError(Object.entries(errors).map(([k, v]) => `${k}: ${v}`).join(" · "));
         }
@@ -2062,113 +3269,153 @@
       }, 30000);
     }
 
-    async function bootstrap() {
-      const savedState = await loadDashboardState();
-      sidebarCollapsed = savedState.sidebarCollapsed;
-      applySidebarState();
-      stockViewSymbols = savedState.stockView.symbols;
-      watchlistSymbols = savedState.watchlist.symbols;
-      for (const sym of stockViewSymbols) {
-        symbolInfo[sym] = { name: savedState.stockView.names?.[sym] || BASE_NAMES[sym] || sym };
-      }
-      for (const sym of watchlistSymbols) {
-        symbolInfo[sym] = { name: savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym };
-      }
-      for (const sym of [...stockViewSymbols, ...watchlistSymbols]) {
-        ensureSymbolState(sym, symbolInfo[sym]?.name || BASE_NAMES[sym] || sym);
-      }
+    async function initializeDashboard() {
+      if (dashboardInitializationPromise) return dashboardInitializationPromise;
+      dashboardInitializationPromise = (async () => {
+        const savedState = await loadDashboardState();
+        sidebarCollapsed = savedState.sidebarCollapsed;
+        applySidebarState();
+        stockViewSymbols = savedState.stockView.symbols;
+        watchlistSymbols = savedState.watchlist.symbols;
+        for (const sym of stockViewSymbols) {
+          symbolInfo[sym] = { name: savedState.stockView.names?.[sym] || BASE_NAMES[sym] || sym };
+        }
+        for (const sym of watchlistSymbols) {
+          symbolInfo[sym] = { name: savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym };
+        }
+        for (const sym of [...stockViewSymbols, ...watchlistSymbols]) {
+          ensureSymbolState(sym, symbolInfo[sym]?.name || BASE_NAMES[sym] || sym);
+        }
 
-      if (isPopoutMode) {
-        if (isOverviewPopout) {
-          applyPopoutMode("overview");
+        if (isPopoutMode) {
+          if (isOverviewPopout) {
+            applyPopoutMode("overview");
+            renderStockView();
+            renderRangeControls();
+            setPopoutMessage("Opening market overview…");
+            refresh();
+            startTimer();
+            dashboardStarted = true;
+            return;
+          }
+          const sym = popoutTarget.toUpperCase();
+          const resolvedName = savedState.stockView.names?.[sym] || savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym;
+          stockViewSymbols = [sym];
+          watchlistSymbols = [];
+          symbolInfo[sym] = { name: resolvedName };
+          ensureSymbolState(sym, resolvedName);
+          applyPopoutMode(sym);
           renderStockView();
-          renderRangeControls();
-          setPopoutMessage("Opening market overview…");
+          setPopoutMessage(`Opening ${sym}…`);
+          els.popoutCloseBtn?.addEventListener("click", () => window.close());
           refresh();
           startTimer();
+          dashboardStarted = true;
           return;
         }
-        const sym = popoutTarget.toUpperCase();
-        const resolvedName = savedState.stockView.names?.[sym] || savedState.watchlist.names?.[sym] || BASE_NAMES[sym] || sym;
-        stockViewSymbols = [sym];
-        watchlistSymbols = [];
-        symbolInfo[sym] = { name: resolvedName };
-        ensureSymbolState(sym, resolvedName);
-        applyPopoutMode(sym);
+
         renderStockView();
-        setPopoutMessage(`Opening ${sym}…`);
-        els.popoutCloseBtn?.addEventListener("click", () => window.close());
-        refresh();
-        startTimer();
-        return;
-      }
+        renderWatchlist();
+        renderRangeControls();
 
-      renderStockView();
-      renderWatchlist();
-      renderRangeControls();
-
-      els.refreshBtn?.addEventListener("click", refresh);
-      els.overviewPopoutBtn?.addEventListener("click", openMarketOverviewPopout);
-      els.sidebarToggleBtn?.addEventListener("click", toggleSidebar);
-      sidebarTabs.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const label = btn.dataset.sidebarTab || btn.textContent.trim();
-          if (label === "Dashboard") {
-            showDashboardHome();
-          } else {
-            showModulePage(label);
+        els.refreshBtn?.addEventListener("click", refresh);
+        els.overviewPopoutBtn?.addEventListener("click", openMarketOverviewPopout);
+        els.sidebarToggleBtn?.addEventListener("click", toggleSidebar);
+        els.settingsBackBtn?.addEventListener("click", showDashboardHome);
+        if (isSettingsMode) {
+          showSettingsPage();
+        } else {
+          showDashboardHome();
+        }
+        els.stockSearchBtn?.addEventListener("click", () => { searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`)); });
+        els.stockSearch?.addEventListener("keydown", event => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`));
           }
         });
-      });
-      showDashboardHome();
-      els.stockSearchBtn?.addEventListener("click", () => { searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`)); });
-      els.stockSearch?.addEventListener("keydown", event => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          searchStocks().catch(err => setSearchStatus(`Search failed: ${err.message}`));
-        }
-      });
-      document.addEventListener("click", event => {
-        const sidebarAction = event.target.closest?.("[data-sidebar-tab]");
-        if (sidebarAction) {
-          event.preventDefault();
-          const label = sidebarAction.dataset.sidebarTab || sidebarAction.textContent.trim();
-          if (label === "Dashboard") {
-            showDashboardHome();
-          } else {
-            showModulePage(label);
+        document.addEventListener("click", event => {
+          const sidebarAction = event.target.closest?.("[data-sidebar-tab]");
+          if (sidebarAction) {
+            event.preventDefault();
+            const label = sidebarAction.dataset.sidebarTab || sidebarAction.textContent.trim();
+            if (label === "Dashboard") {
+              showDashboardHome();
+            } else {
+              showModulePage(label);
+            }
+            return;
           }
-          return;
-        }
-        const watchAction = event.target.closest?.("[data-add-watchlist]");
-        if (watchAction) {
-          event.preventDefault();
-          addToWatchlist(watchAction.dataset.addWatchlist, watchAction.dataset.name);
-          return;
-        }
-        const stockAction = event.target.closest?.("[data-add-stockview]");
-        if (stockAction) {
-          event.preventDefault();
-          addToStockView(stockAction.dataset.addStockview, stockAction.dataset.name);
-          return;
-        }
-        const watchTarget = event.target.closest?.("[data-remove-watch-symbol]");
-        if (watchTarget) {
-          event.preventDefault();
-          removeFromWatchlist(watchTarget.dataset.removeWatchSymbol);
-          return;
-        }
-        const stockTarget = event.target.closest?.("[data-remove-stock-symbol]");
-        if (stockTarget) {
-          event.preventDefault();
-          removeFromStockView(stockTarget.dataset.removeStockSymbol);
-        }
-      });
-      window.addEventListener("resize", () => [...stockViewSymbols, ...watchlistSymbols].forEach(drawSparkline));
-      dashboardReady = true;
-      persistDashboardState();
-      refresh();
-      startTimer();
+          const moduleAction = event.target.closest?.("[data-module-action]");
+          if (moduleAction) {
+            event.preventDefault();
+            const action = moduleAction.dataset.moduleAction;
+            if (action === "dashboard") {
+              showDashboardHome();
+            } else if (action === "toggle-sidebar") {
+              toggleSidebar();
+            } else if (action === "refresh") {
+              refresh();
+            } else if (action === "reset-workspace") {
+              resetLocalWorkspace();
+            } else if (action === "overview") {
+              openMarketOverviewPopout();
+            }
+            return;
+          }
+          const watchAction = event.target.closest?.("[data-add-watchlist]");
+          if (watchAction) {
+            event.preventDefault();
+            addToWatchlist(watchAction.dataset.addWatchlist, watchAction.dataset.name);
+            return;
+          }
+          const stockAction = event.target.closest?.("[data-add-stockview]");
+          if (stockAction) {
+            event.preventDefault();
+            addToStockView(stockAction.dataset.addStockview, stockAction.dataset.name);
+            return;
+          }
+          const watchTarget = event.target.closest?.("[data-remove-watch-symbol]");
+          if (watchTarget) {
+            event.preventDefault();
+            void removeFromWatchlist(watchTarget.dataset.removeWatchSymbol).catch(err => showError(`Could not remove ${watchTarget.dataset.removeWatchSymbol}: ${err?.message || err}`));
+            return;
+          }
+          const stockTarget = event.target.closest?.("[data-remove-stock-symbol]");
+          if (stockTarget) {
+            event.preventDefault();
+            void removeFromStockView(stockTarget.dataset.removeStockSymbol).catch(err => showError(`Could not remove ${stockTarget.dataset.removeStockSymbol}: ${err?.message || err}`));
+          }
+        });
+        window.addEventListener("resize", () => [...stockViewSymbols, ...watchlistSymbols].forEach(drawSparkline));
+        window.addEventListener("focus", () => {
+          if (dashboardReady && !isPopoutMode) refresh().catch(() => {});
+        });
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible" && dashboardReady && !isPopoutMode) {
+            refresh().catch(() => {});
+          }
+        });
+        dashboardReady = true;
+        dashboardStarted = true;
+        persistDashboardState();
+        refresh();
+        startTimer();
+      })();
+      return dashboardInitializationPromise;
+    }
+
+    async function bootstrap() {
+      await loadBuildMeta();
+      await initFirebaseAuth();
+      if (firebaseCurrentUser) {
+        await initializeDashboard();
+        showSignedInShell();
+        if (isSettingsMode) showSettingsPage();
+        else showDashboardHome();
+      } else {
+        showAuthShell("Sign in with Email/Password or Google to continue.");
+      }
     }
 
     bootstrap();

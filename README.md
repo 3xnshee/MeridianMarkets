@@ -93,6 +93,7 @@ See `integrations/README.md` for the provider contract and recommended endpoint 
 - `index.html` — dashboard UI
 - `build-linux.sh` / `build-windows.bat` — build scripts
 - `package-release.sh` / `package-release.bat` — release packaging
+- `build-branch-dist.sh` — creates `dist/main/` and `dist/dev/` app variants for QC/testing
 - `MeridianMarkets.spec` — PyInstaller spec
 - `private/provider.js` — public no-op trading/wallet provider hook
 
@@ -106,4 +107,5 @@ See `integrations/README.md` for the provider contract and recommended endpoint 
 ## Notes
 - The Linux and Windows builds both ship the same dashboard UI.
 - The backend stores dashboard state locally so views and saved data persist across restarts.
+- `dist/main/` and `dist/dev/` can be generated with `build-branch-dist.sh` when you need side-by-side QC builds.
 - If port `8787` is already in use, stop the existing instance before starting another.

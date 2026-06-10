@@ -26,7 +26,7 @@ except Exception:  # pragma: no cover - optional dependency for local dev/builds
 
 ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
 HOST = "0.0.0.0"
-PORT = 8787
+PORT = int(os.environ.get("MERIDIAN_PORT", "8787"))
 YFINANCE_CACHE_TTL_SECONDS = int(os.environ.get("YFINANCE_CACHE_TTL_SECONDS", "21600"))
 YFINANCE_SEARCH_CACHE_TTL_SECONDS = int(os.environ.get("YFINANCE_SEARCH_CACHE_TTL_SECONDS", "86400"))
 USER_AGENT = "Mozilla/5.0 (Hermes Dashboard)"
@@ -69,6 +69,10 @@ APP_VERSION = "1.0"
 BUILD_INFO_FILENAME = "build-info.json"
 WINDOW_WIDTH = 1440
 WINDOW_HEIGHT = 900
+
+
+def _default_build_branch() -> str:
+    return os.environ.get("MERIDIAN_BUILD_BRANCH") or os.environ.get("BUILD_BRANCH") or "dev"
 
 
 def _launch_command(extra_args: list[str] | None = None) -> list[str]:
@@ -134,12 +138,22 @@ def _legacy_state_path() -> Path | None:
 def _default_build_info() -> dict:
     return {
         "version": APP_VERSION,
+        "branch": _default_build_branch(),
         "build_id": "dev",
         "built_at": "",
     }
 
 
+def _runtime_dir() -> Path:
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(sys.argv[0]).resolve().parent
+
+
 def _build_info_path() -> Path:
+    external = _runtime_dir() / BUILD_INFO_FILENAME
+    if external.exists():
+        return external
     return Path(ROOT) / BUILD_INFO_FILENAME
 
 
@@ -156,6 +170,7 @@ def _read_build_info() -> dict:
 
     if isinstance(raw, dict):
         info["version"] = str(raw.get("version", APP_VERSION))
+        info["branch"] = str(raw.get("branch", _default_build_branch())) or _default_build_branch()
         info["build_id"] = str(raw.get("build_id", "dev")) or "dev"
         info["built_at"] = str(raw.get("built_at", ""))
     return info
@@ -178,6 +193,46 @@ def _read_local_config() -> dict:
     except Exception:
         return {}
     return raw if isinstance(raw, dict) else {}
+
+
+def _firebase_config_payload() -> dict:
+    local_config = _read_local_config()
+    sources: list[dict] = []
+    for candidate in (
+        local_config.get("firebase"),
+        local_config.get("firebase_config"),
+        local_config,
+    ):
+        if isinstance(candidate, dict):
+            sources.append(candidate)
+
+    def pick_value(names: list[str]) -> str:
+        for source in sources:
+            for name in names:
+                value = source.get(name)
+                if isinstance(value, str) and value.strip():
+                    return value.strip()
+        for name in names:
+            value = os.environ.get(name)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+        return ""
+
+    payload = {
+        "apiKey": pick_value(["apiKey", "firebaseApiKey", "FIREBASE_API_KEY"]),
+        "authDomain": pick_value(["authDomain", "firebaseAuthDomain", "FIREBASE_AUTH_DOMAIN"]),
+        "projectId": pick_value(["projectId", "firebaseProjectId", "FIREBASE_PROJECT_ID"]),
+        "storageBucket": pick_value(["storageBucket", "firebaseStorageBucket", "FIREBASE_STORAGE_BUCKET"]),
+        "messagingSenderId": pick_value(["messagingSenderId", "firebaseMessagingSenderId", "FIREBASE_MESSAGING_SENDER_ID"]),
+        "appId": pick_value(["appId", "firebaseAppId", "FIREBASE_APP_ID"]),
+        "measurementId": pick_value(["measurementId", "firebaseMeasurementId", "FIREBASE_MEASUREMENT_ID"]),
+    }
+    required_keys = ("apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId")
+    if not all(payload.get(key) for key in required_keys):
+        return {}
+    if not payload["measurementId"]:
+        payload.pop("measurementId", None)
+    return payload
 
 
 def _require_yfinance():
@@ -225,56 +280,112 @@ def _is_intraday_interval(interval: str) -> bool:
 
 
 def _yfinance_quote_for_symbol(symbol: str, range_key: str) -> tuple[Quote, list[list[float]]]:
-    cfg = RANGE_CONFIG[_normalize_range(range_key)]
-    ticker = _require_yfinance().Ticker(symbol.upper())
-    history = ticker.history(
-        period=cfg["range"],
-        interval=cfg["interval"],
-        auto_adjust=False,
-        actions=False,
-        prepost=False,
-    )
-    if history is None or getattr(history, "empty", True):
-        raise ValueError(f"empty chart data for {symbol}")
+    requested_key = _normalize_range(range_key)
+    attempted: list[str] = []
+    candidate_keys = [requested_key]
+    if _is_intraday_interval(RANGE_CONFIG[requested_key]["interval"]):
+        # Thinly traded symbols often have no intraday candles even though they
+        # do have daily history and current quote metadata. Fall back to longer
+        # daily views instead of surfacing a hard error / partial-data state.
+        candidate_keys.extend(["1m", "6m", "ytd", "1y"])
 
+    ticker = _require_yfinance().Ticker(symbol.upper())
+    history = None
+    cfg = RANGE_CONFIG[requested_key]
+    for candidate_key in candidate_keys:
+        attempted.append(candidate_key)
+        candidate_cfg = RANGE_CONFIG[candidate_key]
+        try:
+            history = ticker.history(
+                period=candidate_cfg["range"],
+                interval=candidate_cfg["interval"],
+                auto_adjust=False,
+                actions=False,
+                prepost=False,
+            )
+        except Exception:
+            history = None
+        if history is not None and not getattr(history, "empty", True):
+            cfg = candidate_cfg
+            break
     tz = ZoneInfo("America/New_York")
     series: list[list[float]] = []
     ordered: list[tuple[datetime, object]] = []
 
-    for idx, row in history.iterrows():
-        dt = idx.to_pydatetime() if hasattr(idx, "to_pydatetime") else idx
-        if getattr(dt, "tzinfo", None) is None:
-            dt = dt.replace(tzinfo=tz)
-        else:
-            dt = dt.astimezone(tz)
-        ordered.append((dt, row))
-        close_f = _to_float(getattr(row, "get", lambda key, default=None: default)("Close"))
-        if close_f is not None:
-            series.append([float(dt.timestamp()), close_f])
+    if history is not None and not getattr(history, "empty", True):
+        for idx, row in history.iterrows():
+            dt = idx.to_pydatetime() if hasattr(idx, "to_pydatetime") else idx
+            if getattr(dt, "tzinfo", None) is None:
+                dt = dt.replace(tzinfo=tz)
+            else:
+                dt = dt.astimezone(tz)
+            ordered.append((dt, row))
+            close_f = _to_float(getattr(row, "get", lambda key, default=None: default)("Close"))
+            if close_f is not None:
+                series.append([float(dt.timestamp()), close_f])
 
-    if not ordered:
-        raise ValueError(f"empty chart data for {symbol}")
+    info = getattr(ticker, "info", {}) or {}
+    fast_info = getattr(ticker, "fast_info", {}) or {}
 
-    latest_dt, latest_row = ordered[-1]
-    current_price = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Close"))
-    open_ = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Open"))
-    high = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("High"))
-    low = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Low"))
-    volume = _to_int(getattr(latest_row, "get", lambda key, default=None: default)("Volume"))
+    latest_dt = None
+    latest_row = None
+    if ordered:
+        latest_dt, latest_row = ordered[-1]
+
+    current_price = None
+    open_ = None
+    high = None
+    low = None
+    volume = None
+
+    if latest_row is not None:
+        current_price = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Close"))
+        open_ = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Open"))
+        high = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("High"))
+        low = _to_float(getattr(latest_row, "get", lambda key, default=None: default)("Low"))
+        volume = _to_int(getattr(latest_row, "get", lambda key, default=None: default)("Volume"))
+
+    if current_price is None and isinstance(fast_info, dict):
+        current_price = _to_float(
+            fast_info.get("lastPrice")
+            or fast_info.get("regularMarketPrice")
+            or fast_info.get("currentPrice")
+        )
+    if current_price is None and isinstance(info, dict):
+        current_price = _to_float(info.get("regularMarketPrice") or info.get("currentPrice"))
 
     previous_close = None
     if len(ordered) > 1:
         previous_close = _to_float(getattr(ordered[-2][1], "get", lambda key, default=None: default)("Close"))
-
-    info = getattr(ticker, "info", {}) or {}
-    fast_info = getattr(ticker, "fast_info", {}) or {}
     if previous_close is None and isinstance(fast_info, dict):
         previous_close = _to_float(fast_info.get("previousClose") or fast_info.get("regularMarketPreviousClose"))
     if previous_close is None and isinstance(info, dict):
         previous_close = _to_float(info.get("previousClose") or info.get("regularMarketPreviousClose"))
 
-    if current_price is None and series:
-        current_price = series[-1][1]
+    if current_price is None:
+        raise ValueError(f"no live price data for {symbol}")
+
+    if not series:
+        # Avoid blank cards when Yahoo does not expose candles for the requested
+        # range. A single point keeps the card alive and prevents partial-data
+        # noise, while still showing the latest available quote.
+        now_dt = datetime.now(tz)
+        series = [[float(now_dt.timestamp()), current_price]]
+        ordered = [(now_dt, {"Close": current_price})]
+        latest_dt = now_dt
+        open_ = open_ if open_ is not None else current_price
+        high = high if high is not None else current_price
+        low = low if low is not None else current_price
+
+    if latest_dt is None:
+        latest_dt = ordered[-1][0]
+
+    if open_ is None:
+        open_ = current_price
+    if high is None:
+        high = current_price
+    if low is None:
+        low = current_price
 
     change = None
     change_pct = None
@@ -283,7 +394,7 @@ def _yfinance_quote_for_symbol(symbol: str, range_key: str) -> tuple[Quote, list
         change_pct = (change / previous_close) * 100
 
     date = latest_dt.strftime("%Y-%m-%d")
-    time_str = latest_dt.strftime("%H:%M:%S") if _is_intraday_interval(cfg["interval"]) else ""
+    time_str = latest_dt.strftime("%H:%M:%S") if _is_intraday_interval(cfg["interval"]) and len(series) > 1 else ""
     name = str((info or {}).get("shortName") or (info or {}).get("longName") or symbol.upper())
 
     return (
@@ -424,6 +535,7 @@ def build_health_payload() -> dict:
         "status": "ok",
         "app": APP_TITLE,
         "version": BUILD_INFO.get("version", APP_VERSION),
+        "branch": BUILD_INFO.get("branch", _default_build_branch()),
         "build_id": BUILD_INFO.get("build_id", "dev"),
         "built_at": BUILD_INFO.get("built_at", ""),
         "host": HOST,
@@ -435,6 +547,7 @@ def build_meta_payload() -> dict:
     return {
         "app": APP_TITLE,
         "version": BUILD_INFO.get("version", APP_VERSION),
+        "branch": BUILD_INFO.get("branch", _default_build_branch()),
         "build_id": BUILD_INFO.get("build_id", "dev"),
         "built_at": BUILD_INFO.get("built_at", ""),
         "default_symbols": DEFAULT_SYMBOLS,
@@ -445,6 +558,7 @@ def build_meta_payload() -> dict:
         "cache_ttl_seconds": YFINANCE_CACHE_TTL_SECONDS,
         "search_cache_ttl_seconds": YFINANCE_SEARCH_CACHE_TTL_SECONDS,
         "yfinance_available": yf is not None,
+        "firebase_config": _firebase_config_payload(),
     }
 
 
