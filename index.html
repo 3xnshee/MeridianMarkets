@@ -1630,6 +1630,7 @@
     const fmtPrice = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtInt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
     const fmtPct = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: "always" });
+    const currencyFormatters = new Map();
 
     const els = Object.fromEntries([
       "statusText", "refreshBtn", "errorBox", "rangeControls",
@@ -2225,7 +2226,7 @@
       })();
       const list = [...new Set(supported.filter(Boolean).map(code => String(code).toUpperCase()))].sort((a, b) => a.localeCompare(b));
       if (profileState.currency && !list.includes(profileState.currency)) list.unshift(profileState.currency);
-      return ['<option value="">Select currency</option>', ...list.map(code => `<option value="${escapeHtml(code)}">${escapeHtml(code)}</option>`)].join("");
+      return ['<option value="">Select currency</option>', ...list.map(code => `<option value="${escapeHtml(code)}"${code === profileState.currency ? ' selected' : ''}>${escapeHtml(code)}</option>`)].join("");
     }
 
     function renderSettingsAccountMarkup() {
@@ -2281,12 +2282,13 @@
       const privateKeyInput = document.getElementById("profilePrivateKey");
       const privateKeyToggle = document.getElementById("profilePrivateKeyToggle");
 
-      const updateSettingsState = () => {
+      const updateSettingsState = (refreshDashboard = false) => {
         profileState.email = emailInput?.value.trim() || "";
         profileState.timezone = timezoneInput?.value || "";
         profileState.currency = (currencyInput?.value || "").trim().toUpperCase();
         if (privateKeyInput) profileState.privateKey = privateKeyInput.value;
         saveProfileState();
+        if (refreshDashboard) refresh().catch(() => {});
       };
 
       const setPrivateKeyVisibility = visible => {
@@ -2300,7 +2302,7 @@
 
       emailInput?.addEventListener("input", updateSettingsState);
       timezoneInput?.addEventListener("change", updateSettingsState);
-      currencyInput?.addEventListener("change", updateSettingsState);
+      currencyInput?.addEventListener("change", () => updateSettingsState(true));
       privateKeyInput?.addEventListener("input", updateSettingsState);
       privateKeyToggle?.addEventListener("click", () => setPrivateKeyVisibility(!profilePrivateKeyVisible));
       document.getElementById("settingsSignOutBtn")?.addEventListener("click", async () => {
@@ -2519,7 +2521,21 @@
     }
 
     function money(v) {
-      return v == null || Number.isNaN(v) ? "—" : fmtPrice.format(v);
+      if (v == null || Number.isNaN(v)) return "—";
+      const currency = String(profileState.currency || "").trim().toUpperCase();
+      if (currency) {
+        try {
+          let formatter = currencyFormatters.get(currency);
+          if (!formatter) {
+            formatter = new Intl.NumberFormat(undefined, { style: "currency", currency });
+            currencyFormatters.set(currency, formatter);
+          }
+          return formatter.format(v);
+        } catch {
+          // fall back to plain number formatting below
+        }
+      }
+      return fmtPrice.format(v);
     }
 
     function shares(v) {
