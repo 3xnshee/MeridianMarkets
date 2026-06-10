@@ -1421,6 +1421,7 @@
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Market">Market</button>
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Trading">Trading</button>
           <button class="btn sidebar-tab" type="button" data-sidebar-tab="Wallet">Wallet</button>
+          <button class="btn sidebar-tab" type="button" data-sidebar-settings="true">Settings</button>
           <div class="sidebar-spacer"></div>
           <button class="btn sidebar-tab" type="button" data-logout-button="true">Log Out</button>
         </div>
@@ -3344,6 +3345,12 @@
             } else {
               showModulePage(label);
             }
+            return;
+          }
+          const settingsAction = event.target.closest?.("[data-sidebar-settings]");
+          if (settingsAction) {
+            event.preventDefault();
+            openSettingsPage();
             return;
           }
           const moduleAction = event.target.closest?.("[data-module-action]");
